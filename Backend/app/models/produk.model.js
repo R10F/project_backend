@@ -1,0 +1,29 @@
+const mongoose = require("mongoose");
+const {Schema} = mongoose;
+
+const produkSchema = new Schema({
+    'toko': {
+        type: Schema.Types.ObjectId, ref: 'Toko',
+        required: true
+    },
+    'nama': {
+        required : true,
+        type: String
+    },
+    'harga': {
+        required : true,
+        type: Number
+    },
+    'qty': {
+        required : true,
+        type: Number
+    },
+    'diskon': Number,
+    'gambar': {
+        required : true,
+        type: String
+    }
+})
+
+const Produk = mongoose.model('Produk', produkSchema);
+module.exports = Produk;
