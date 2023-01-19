@@ -39,7 +39,9 @@ class App extends React.Component {
   };
 
   addToCart = (id, increment) => {
-    let index = this.state.cartItems.findIndex((cartitem) => cartitem.id === id);
+    let index = this.state.cartItems.findIndex(
+      (cartitem) => cartitem.id === id
+    );
     let inc = parseInt(increment, 10);
 
     if (index === -1) {
@@ -70,9 +72,13 @@ class App extends React.Component {
   };
 
   deleteFromCart = (id) => {
-    const index = this.state.cartItems.findIndex((cartitem) => cartitem.id === id);
+    const index = this.state.cartItems.findIndex(
+      (cartitem) => cartitem.id === id
+    );
     const qty = this.state.cartQty - this.state.cartItems[index].qty;
-    const total = this.state.cartTotal - this.state.cartItems[index].harga * this.state.cartItems[index].qty;
+    const total =
+      this.state.cartTotal -
+      this.state.cartItems[index].harga * this.state.cartItems[index].qty;
     let remainingCart = this.state.cartItems;
     remainingCart.splice(index, 1);
 
@@ -106,9 +112,30 @@ class App extends React.Component {
     return (
       <Routes>
         <Route path="/" element={<Layout inCart={this.state.cartQty} />}>
-          <Route index element={<Home products={this.state.products} addToCart={this.addToCart} />} />
-          <Route path="/catalog" element={<Catalog products={this.state.products} addToCart={this.addToCart} />} />
-          <Route path="/catalog/:productId" element={<SingleCatalog getProduct={this.getProduct} addToCart={this.addToCart} />} />
+          <Route
+            index
+            element={
+              <Home products={this.state.products} addToCart={this.addToCart} />
+            }
+          />
+          <Route
+            path="/catalog"
+            element={
+              <Catalog
+                products={this.state.products}
+                addToCart={this.addToCart}
+              />
+            }
+          />
+          <Route
+            path="/catalog/:productId"
+            element={
+              <SingleCatalog
+                getProduct={this.getProduct}
+                addToCart={this.addToCart}
+              />
+            }
+          />
           <Route
             path="/cart"
             element={
@@ -127,13 +154,22 @@ class App extends React.Component {
         </Route>
 
         <Route path="/admin" element={<Login />} />
-        <Route path="/admin/dashboard" element={<Dashboard products={this.state.products} editProduct={this.editProduct} />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            <Dashboard
+              products={this.state.products}
+              editProduct={this.editProduct}
+            />
+          }
+        />
       </Routes>
     );
   }
 
   componentWillMount() {
-    localStorage.getItem("laptopu") && this.setState(JSON.parse(localStorage.getItem("laptopu")));
+    localStorage.getItem("laptopu") &&
+      this.setState(JSON.parse(localStorage.getItem("laptopu")));
   }
 
   componentWillUpdate(nextProps, nextState) {
