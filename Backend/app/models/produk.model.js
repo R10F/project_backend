@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
 const produkSchema = new Schema({
-    'toko': {
-        type: Schema.Types.ObjectId, ref: 'Toko',
-        required: true
-    },
+    // 'toko': {
+    //     type: Schema.Types.ObjectId, ref: 'Toko',
+    //     required: true
+    // },
     'nama': {
         required : true,
         type: String
