@@ -4,52 +4,8 @@ const router = express.Router();
 const db = require('../models');
 const Toko = require('../models/toko.model')
 const Produk = require('../models/produk.model');
+const sample = require('../models/data.sample');
 
-const toko = [
-  {
-    "nama": "Sinar Rezeki Store",
-    "kota": "Tangerang Selatan",
-    "logo": "",
-    "check": false
-  },
-  {
-    "nama": "Sinar Rezeki Store",
-    "kota": "Tangerang Selatan",
-    "logo": "",
-    "check": false
-  }
-];
-
-const produk = [
-  {
-    "nama": "Yupi Strawberry Kiss 120 gr",
-    "harga": 8975,
-    "qty": 1,
-    "diskon": 0,
-    "gambar": "xx",
-  },
-  {
-    "nama": "Yupi Strawberry Kiss 120 gr",
-    "harga": 8975,
-    "qty": 1,
-    "diskon": 15,
-    "gambar": "xx",
-  },
-  {
-    "nama": "Yupi Strawberry Kiss 120 gr",
-    "harga": 8975,
-    "qty": 1,
-    "diskon": 0,
-    "gambar": "xx",
-  },
-  {
-    "nama": "Yupi Strawberry Kiss 120 gr",
-    "harga": 8975,
-    "qty": 1,
-    "diskon": 15,
-    "gambar": "xx",
-  }
-];
 
 
 module.exports = (router) => {
@@ -78,16 +34,16 @@ module.exports = (router) => {
   });
   router.get("/generate-sample-produk", async (req, res) => {
     const produkPerToko = 2;
-  
+
     try {
-      await Produk.insertMany(produk).then(async (insertedProduk) => {
-        for (let i = 0; i < toko.length; i++) {
-          toko[i].produk = [
+      await Produk.insertMany(sample.produk).then(async (insertedProduk) => {
+        for (let i = 0; i < sample.toko.length; i++) {
+          sample.toko[i].produk = [
             insertedProduk[produkPerToko * i],
             insertedProduk[produkPerToko * i + 1]
           ];
         }
-        const result = await Toko.insertMany(toko);
+        const result = await Toko.insertMany(sample.toko);
         res.status(200).json(result);
       });
     }
