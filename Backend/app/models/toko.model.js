@@ -1,23 +1,25 @@
 const mongoose = require("mongoose");
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const tokoSchema = new Schema({
     'nama': {
-        required : true,
+        required: true,
         type: String
     },
     'kota': {
-        required : true,
+        required: true,
         type: String
     },
     'logo': {
         type: String
     },
     'check': {
-        required : true,
+        required: true,
         type: Boolean
     },
-    'produk': [{type: Schema.Types.ObjectId, ref: 'Produk'}]
+    'produk': [
+        { type: Schema.Types.ObjectId, ref: 'Produk' }
+    ]
 })
 
 const Toko = mongoose.model('Toko', tokoSchema);
