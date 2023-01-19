@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const loadSample = require('./sampleData');
+const loadSample = require('./sampleDatatmp');
 const api = require('./api');
 
 loadSample(router);

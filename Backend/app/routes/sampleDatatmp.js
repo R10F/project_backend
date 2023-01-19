@@ -59,7 +59,8 @@ module.exports = (router) => {
         console.log(p.toko);
       })
       const newProduk = await Produk.create(produk);
-      newProduk.map(new)
+      // newProduk.map(new)
+      res.status(200).json({"message": toko});
     }
     catch (err){
       console.log('err');
