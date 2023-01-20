@@ -2,14 +2,12 @@ const toko = [
   {
     "nama": "Sinar Rezeki Store",
     "kota": "Tangerang Selatan",
-    "logo": "",
-    "check": false
+    "logo": ""
   },
   {
     "nama": "Sinar Rezeki Store",
     "kota": "Tangerang Selatan",
-    "logo": "",
-    "check": false
+    "logo": ""
   }
 ];
 

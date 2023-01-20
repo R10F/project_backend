@@ -18,6 +18,10 @@ const produkSchema = new Schema({
     'gambar': {
         required: true,
         type: String
+    },
+    'check': {
+        type: Boolean,
+        default: false
     }
 })
 

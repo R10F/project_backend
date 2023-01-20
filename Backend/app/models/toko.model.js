@@ -14,8 +14,8 @@ const tokoSchema = new Schema({
         type: String
     },
     'check': {
-        required: true,
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     'produk': [
         { type: Schema.Types.ObjectId, ref: 'Produk' }
