@@ -13,6 +13,7 @@ const checkToko = async (req) => {
     // satu lagi ketika emg smua checked dan user klik uncheck toko lagi (skenario B // toggleAll = true). 
     // utk skenario B, karena di produk enggak ada ID toko, handle dari frontend dulu baru panggil checkToko?
     console.log(typeof(req.body.toggleAll));
+    //pakai package body-parser bisa terima bool lgsg?
     if (req.body.toggleAll == 'true'){
         const checkedProduk = updatedToko.produk;
         const updatedProduk = await Produk.updateMany({_id : {$in: checkedProduk} }, {check: update}, {new: true});
