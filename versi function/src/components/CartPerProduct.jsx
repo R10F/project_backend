@@ -1,8 +1,80 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import useFetch from "../useFetch";
-import { FiPlus, FiMinus } from "react-icons/fi";
+import { FiPlus, FiMinus, FiTrash } from "react-icons/fi";
 export const CartPerProduct = () => {
+  const [toko, setToko] = useState();
+  const [reRender, setReRender] = useState(0);
   let [qty, setQty] = useState(1);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/produk")
+      .then((res) => res.json())
+      .then((data) => {
+        setToko(data);
+      });
+  }, [reRender]);
+
+  const checkAllHandler = (e) => {
+    Array.from(document.getElementsByClassName("checkbox")).forEach(element => {
+      if (e.target.checked) {
+        element.checked = true;
+      } else {
+        element.checked = false;
+      }
+    });
+  }
+
+  const checkTokoHandler = (e) => {
+    const productContainer = e.target.parentNode.nextSibling;
+
+    Array.from(productContainer.children).forEach(element => {
+      const input = element.getElementsByTagName('input')[0];
+
+      if (e.target.checked) {
+        input.checked = true;
+      } else {
+        input.checked = false;
+      }
+    })
+  }
+
+  const checkProdukHandler = (e) => {
+    const productContainer = e.target.parentNode.parentNode;
+
+    let count = 0;
+    Array.from(productContainer.children).forEach(element => {
+      const input = element.getElementsByTagName('input')[0];
+      if (input.checked) count++;
+    });
+
+    const checkToko = productContainer.previousSibling.getElementsByTagName('input')[0];
+    if (count === productContainer.children.length) {
+      checkToko.checked = true;
+    } else {
+      checkToko.checked = false;
+    }
+  }
+
+  const deleteCheckedHandler = async () => {
+    let idsToko = [];
+    let idsProduk = [];
+
+    Array.from(document.getElementsByClassName("checkbox")).forEach(element => {
+      if (element.checked) {
+        if (element.dataset.for === "toko") {
+          idsToko.push(element.dataset.id);
+        } else {
+          idsProduk.push(element.dataset.id);
+        }
+      }
+    });
+
+    fetch("http://localhost:8080/hapus-produk", {
+      method: "DELETE",
+      headers: { 'Content-Type': 'application/json'},
+      body: JSON.stringify({ idsToko, idsProduk })
+    }).then(() => { setReRender(reRender + 1) });
+  }
 
   let handlechange = () => {
     setQty(qty);
@@ -17,30 +89,56 @@ export const CartPerProduct = () => {
   return (
     <>
       <div className="d-flex flex-row mb-3">
-        <div className="p-2">
-          <input type="checkbox" name="cekAll" id="cekAll" />
-        </div>
-        <div className="p-2">
-          <h3>Pilih Semua</h3>
-        </div>
+        <input type="checkbox" className="p-2" name="cekAll" id="cekAll" onChange={checkAllHandler} />
+        <h3 className="p-2">Pilih Semua</h3>
+        <button
+          className="btn btn-link px-2"
+          onClick={deleteCheckedHandler}
+        >
+          <FiTrash />
+        </button>
       </div>
 
       <div id="garis"></div>
-
+      
       <div className="toko mt-3">
-        <div className="d-flex flex-row mb-3">
-          <div className="p-2">
-            <input type="checkbox" name="cekToko" id="cekToko" />
+        {toko !== undefined ? (
+          toko.map(t => {
+            return <>
+              <div>
+                <div>
+                  <input type="checkbox" class="checkbox" defaultChecked={t.check} data-for="toko" data-id={t._id} onChange={checkTokoHandler} />
+                  <b>{t.nama}</b>
+                </div>
+                <div className="product-container">
+                  {t.produk.map(p => {
+                    return <>
+                      <div>
+                        <input type="checkbox" class="checkbox" defaultChecked={p.check} data-for="produk" data-id={p._id} onChange={checkProdukHandler} />
+                        {p.nama}
+                      </div>
+                    </>
+                  })}
+                </div>
+              </div>
+            </>
+          })
+        ) : ""}
+      </div>
+      <>
+        <div className="d-flex flex-row mb-3 mt-5">
+          <input type="checkbox" className="p-2" name="cekToko" />
+          <div>
           </div>
           <div className="p-2">
-            <h3>Nama Toko</h3>
+            <h3>Nama</h3>
           </div>
         </div>
 
         <>
           <div className="d-flex flex-row mb-3">
             <div className="p-2">
-              <input type="checkbox" name="cekToko" id="cekToko" />
+              <input type="checkbox" name="cekToko" data-id="23" onChange={checkProdukHandler} />
             </div>
             <div className="p-2">
               <img
@@ -91,7 +189,7 @@ export const CartPerProduct = () => {
             </div>
           </div>
         </>
-      </div>
+      </>
     </>
   );
 };

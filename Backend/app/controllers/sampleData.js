@@ -18,8 +18,8 @@ exports.deleteProduk = async (req, res) => {
   try {
     await Produk.deleteMany({ _id: { $in: req.body.idsProduk } });
     await Toko.deleteMany({ _id: { $in: req.body.idsToko } });
-
-    res.status(204).send();
+    
+    res.status(200).send();
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
