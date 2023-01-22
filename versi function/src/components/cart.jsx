@@ -1,13 +1,17 @@
+import useFetch from "../useFetch";
 import { CartPerProduct } from "./CartPerProduct";
 
 export const Cart = () => {
-  let generateProduk = () => {
-    fetch("http://localhost:8080/generate-sample-produk")
+  const { data } = useFetch(" http://localhost:8080/produk");
+
+  const generateProduk = () => {
+    fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
       });
   };
+
   return (
     <main>
       <>
@@ -27,7 +31,7 @@ export const Cart = () => {
                 Add something to your cart !
               </button>
             </div>
-            <CartPerProduct />
+            {data && <CartPerProduct data={data} />}
           </div>
         </article>
       </>

@@ -98,7 +98,6 @@ export const CartPerProduct = () => {
           <FiTrash />
         </button>
       </div>
-
       <div id="garis"></div>
       
       <div className="toko mt-3">
@@ -151,42 +150,69 @@ export const CartPerProduct = () => {
               <h5>Frisian Flag Milky Susu UHT Chocolate 115ml [12 pcs]</h5>
               <p>Rp 35.000</p>
             </div>
-            <div className="col-md-2 d-flex align-items-center my-2">
-              <div className="d-flex flex-column">
-                <div className="d-flex">
-                  <button
-                    className="btn btn-link px-2"
-                    disabled={qty <= 1 ? 1 : 0}
-                    onClick={() => {
-                      // this.props.addToCart(this.props.productDetail.id, -1);
-                      handlechange();
-                    }}
-                  >
-                    <FiMinus />
-                  </button>
 
-                  <input
-                    id="quantity"
-                    min="1"
-                    max="7"
-                    value={qty}
-                    type="number"
-                    className="form-control form-control-sm"
-                    onChange={handleInput}
-                  />
+            <div className="produk">
+              {toko.produk.map((produk) => {
+                console.log(produk);
+                return (
+                  <div className="d-flex flex-row mb-3" data-key={produk._id}>
+                    <div className="p-2">
+                      <input type="checkbox" name="cekToko" id="cekToko" />
+                    </div>
+                    <div className="p-2">
+                      <img src={produk.gambar} alt="" width={"75px"} />
+                    </div>
+                    <div className="p-2">
+                      <h5>{produk.nama}</h5>
+                      <p>
+                        {new Intl.NumberFormat("id-ID", {
+                          style: "currency",
+                          currency: "IDR",
+                          minimumFractionDigits: 0,
+                        }).format(produk.harga)}
+                      </p>
+                    </div>
+                    <div className="col-md-2 d-flex align-items-center my-2">
+                      <div className="d-flex flex-column">
+                        <div className="d-flex">
+                          <button
+                            className="btn btn-link px-2"
+                            disabled={qty <= 1 ? 1 : 0}
+                            onClick={() => {
+                              // this.props.addToCart(this.props.productDetail.id, -1);
+                              handlechange();
+                            }}
+                          >
+                            <FiMinus />
+                          </button>
 
-                  <button
-                    className="btn btn-link px-2"
-                    onClick={() => {
-                      // this.props.addToCart(this.props.productDetail.id, 1);
-                      handlechange();
-                    }}
-                  >
-                    <FiPlus />
-                  </button>
-                </div>
-              </div>
+                          <input
+                            id="quantity"
+                            min="1"
+                            max="7"
+                            value={produk.qty}
+                            type="number"
+                            className="form-control form-control-sm"
+                            onChange={handleInput}
+                          />
+
+                          <button
+                            className="btn btn-link px-2"
+                            onClick={() => {
+                              // this.props.addToCart(this.props.productDetail.id, 1);
+                              handlechange();
+                            }}
+                          >
+                            <FiPlus />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
+            <div id="garis"></div>
           </div>
         </>
       </>
