@@ -152,7 +152,7 @@ export const CartPerProduct = () => {
             </div>
 
             <div className="produk">
-              {toko.produk.map((produk) => {
+              {[].map((produk) => {
                 console.log(produk);
                 return (
                   <div className="d-flex flex-row mb-3" data-key={produk._id}>
