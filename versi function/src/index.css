@@ -1,0 +1,10 @@
+input[type="checkbox"] {
+  width: 25px;
+  height: 25px;
+}
+
+#garis {
+  height: 8px;
+  background-color: #f3f4f5;
+  width: 100%;
+}
