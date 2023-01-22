@@ -19,7 +19,10 @@ class CartPerProduct extends React.Component {
     if (newQty <= 0 && newQty !== "") return;
     if (newQty === "") newQty = 0;
     this.setState({ qty: e.target.value });
-    this.props.addToCart(this.props.productDetail.id, newQty - this.props.productDetail.qty);
+    this.props.addToCart(
+      this.props.productDetail.id,
+      newQty - this.props.productDetail.qty
+    );
   };
   deleteFromCart = () => {
     Swal.fire({
@@ -32,7 +35,11 @@ class CartPerProduct extends React.Component {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", "This product has been deleted from your cart.", "success");
+        Swal.fire(
+          "Deleted!",
+          "This product has been deleted from your cart.",
+          "success"
+        );
 
         this.props.deleteFromCart(this.props.productDetail.id);
       }
@@ -40,23 +47,41 @@ class CartPerProduct extends React.Component {
   };
 
   render() {
-    let harga = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(this.props.productDetail.harga * this.props.productDetail.qty);
+    let harga = new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(this.props.productDetail.harga * this.props.productDetail.qty);
     return (
       <section className="card rounded-3 mb-4">
         <div className="card-body p-4">
           <div className="row d-flex justify-content-between align-items-center">
             <div className="col-md-2">
-              <img src={this.props.productDetail.src} className="img-fluid rounded-3" alt={this.props.productDetail.nama} />
+              <img
+                src={this.props.productDetail.src}
+                className="img-fluid rounded-3"
+                alt={this.props.productDetail.nama}
+              />
             </div>
             <div className="col-md-3">
-              <Link to={`/catalog/${this.props.productDetail.id}`} className="text-decoration-none text-dark">
-                <p className="lead fw-normal mb-2">{this.props.productDetail.nama}</p>
+              <Link
+                to={`/catalog/${this.props.productDetail.id}`}
+                className="text-decoration-none text-dark"
+              >
+                <p className="lead fw-normal mb-2">
+                  {this.props.productDetail.nama}
+                </p>
               </Link>
             </div>
 
             <div className="col-md-2 d-flex align-items-center my-2">
               <div className="d-flex flex-column">
-                <label htmlFor="quantity" className={this.state.qty ? "d-none" : "text-danger form-label"}>
+                <label
+                  htmlFor="quantity"
+                  className={
+                    this.state.qty ? "d-none" : "text-danger form-label"
+                  }
+                >
                   Please enter positive value
                 </label>
                 <div className="d-flex">
@@ -71,7 +96,14 @@ class CartPerProduct extends React.Component {
                     <FiMinus />
                   </button>
 
-                  <input id="quantity" min="1" value={this.state.qty} type="number" className="form-control form-control-sm" onChange={this.handleinput} />
+                  <input
+                    id="quantity"
+                    min="1"
+                    value={this.state.qty}
+                    type="number"
+                    className="form-control form-control-sm"
+                    onChange={this.handleinput}
+                  />
 
                   <button
                     className="btn btn-link px-2"
@@ -87,11 +119,19 @@ class CartPerProduct extends React.Component {
             </div>
 
             <div className="col-md-3 offset-lg-1 d-flex flex-column">
-              {this.props.productDetail.beforeSale !== this.props.productDetail.harga ? (
+              {this.props.productDetail.beforeSale !==
+              this.props.productDetail.harga ? (
                 <>
                   <p className="fs-4 text-danger mb-0">{harga}</p>
                   <small className="text-muted text-decoration-line-through">
-                    {new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(this.props.productDetail.beforeSale * this.props.productDetail.qty)}
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                      minimumFractionDigits: 0,
+                    }).format(
+                      this.props.productDetail.beforeSale *
+                        this.props.productDetail.qty
+                    )}
                   </small>
                 </>
               ) : (
@@ -99,7 +139,10 @@ class CartPerProduct extends React.Component {
               )}
             </div>
             <div className="text-end col-md-1">
-              <button className="btn text-danger fs-5" onClick={this.deleteFromCart}>
+              <button
+                className="btn text-danger fs-5"
+                onClick={this.deleteFromCart}
+              >
                 <FiTrash2 />
               </button>
             </div>
