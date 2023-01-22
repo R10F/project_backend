@@ -4,7 +4,14 @@ import { CartPerProduct } from "./CartPerProduct";
 export const Cart = () => {
   const { data } = useFetch(" http://localhost:8080/produk");
 
-  const generateProduk = () => {};
+  const generateProduk = () => {
+    fetch("http://localhost:8080/produk")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
   return (
     <main>
       <>
