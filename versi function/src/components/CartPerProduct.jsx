@@ -7,13 +7,12 @@ export const CartPerProduct = () => {
   const [toko, setToko] = useState([]);
   const [reRender, setReRender] = useState(0);
   const [hargaTotal, setHargaTotal] = useState(0);
-  let [qty, setQty] = useState(1);
+  // let [qty, setQty] = useState(1);
 
   useEffect(() => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
-        
         let tempHarga = 0;
         data.forEach(toko => {
           toko.produk.forEach(item => {
@@ -125,16 +124,16 @@ export const CartPerProduct = () => {
   //   }).then(() => { setReRender(reRender + 1) });
   // }
 
-  let handlechange = () => {
-    setQty(qty);
-  };
+  // let handlechange = () => {
+  //   setQty(qty);
+  // };
 
-  const handleInput = (e) => {
-    let newQty = e.target.value;
-    if (newQty <= 0 && newQty !== "") return;
-    if (newQty === "") newQty = 0;
-    setQty(e.target.value);
-  };
+  // const handleInput = (e) => {
+  //   let newQty = e.target.value;
+  //   if (newQty <= 0 && newQty !== "") return;
+  //   if (newQty === "") newQty = 0;
+  //   setQty(e.target.value);
+  // };
 
   return <>
     <div className="d-flex flex-row mb-3">
@@ -163,7 +162,7 @@ export const CartPerProduct = () => {
         })
       ) : ""}
     </div>
-    <>
+    {/* <>
       <div className="d-flex flex-row mb-3 mt-5">
         <input type="checkbox" className="p-2" name="cekToko" />
         <div>
@@ -254,6 +253,6 @@ export const CartPerProduct = () => {
           <div id="garis"></div>
         </div>
       </>
-    </>
+    </> */}
   </>;
 };

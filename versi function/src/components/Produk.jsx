@@ -9,7 +9,6 @@ export const Produk = (props) => {
 
   const minQty = 1;
   const maxQty = 7;
-  const hargaProduk = produk.harga * (1 - produk.diskon / 100);
 
   const [qty, setQty] = useState(produk.qty);
 
@@ -33,9 +32,10 @@ export const Produk = (props) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ qty: newQty })
     }).then(() => {
-        const subTotal = delta * hargaProduk;
-        setHargaTotal(hargaTotal + subTotal);
-      });
+      const hargaBersih = produk.harga * (1 - produk.diskon / 100);
+      const subTotal = delta * hargaBersih;
+      setHargaTotal(hargaTotal + subTotal);
+    });
   }
 
   return <>
