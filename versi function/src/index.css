@@ -3,8 +3,12 @@ input[type="checkbox"] {
   height: 25px;
 }
 
-#garis {
-  height: 8px;
-  background-color: #f3f4f5;
-  width: 100%;
+.garis {
+  border-top-width: 8px;
+  border-top-color: #f3f4f5;
+}
+
+.product-img {
+  height: 75px;
+  width: 75px;
 }

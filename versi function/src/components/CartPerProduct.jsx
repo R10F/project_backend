@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 // import useFetch from "../useFetch";
-import { FiPlus, FiMinus, FiTrash } from "react-icons/fi";
+import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 export const CartPerProduct = () => {
   const [toko, setToko] = useState();
   const [reRender, setReRender] = useState(0);
@@ -71,9 +71,13 @@ export const CartPerProduct = () => {
 
     fetch("http://localhost:8080/hapus-produk", {
       method: "DELETE",
-      headers: { 'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ idsToko, idsProduk })
     }).then(() => { setReRender(reRender + 1) });
+  }
+
+  const deleteProdukHanlder = (e) => {
+    console.log(e.target.closest("[data-id]").dataset.id)
   }
 
   let handlechange = () => {
@@ -86,6 +90,15 @@ export const CartPerProduct = () => {
     if (newQty === "") newQty = 0;
     setQty(e.target.value);
   };
+
+  const currency = (harga) => {
+    return new Intl.NumberFormat("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+    }).format(harga);
+  }
+
   return (
     <>
       <div className="d-flex flex-row mb-3">
@@ -95,26 +108,97 @@ export const CartPerProduct = () => {
           className="btn btn-link px-2"
           onClick={deleteCheckedHandler}
         >
-          <FiTrash />
+          <FiTrash2 />
         </button>
       </div>
       <div id="garis"></div>
-      
+
       <div className="toko mt-3">
         {toko !== undefined ? (
           toko.map(t => {
             return <>
-              <div>
-                <div>
-                  <input type="checkbox" class="checkbox" defaultChecked={t.check} data-for="toko" data-id={t._id} onChange={checkTokoHandler} />
-                  <b>{t.nama}</b>
+              <div className="card garis rounded-3 mb-4">
+                <div className="d-flex align-items-center">
+                  <input
+                    type="checkbox"
+                    class="checkbox"
+                    defaultChecked={t.check}
+                    data-for="toko"
+                    data-id={t._id}
+                    onChange={checkTokoHandler}
+                  />
+                  <div>
+                    <b>{t.nama}</b>
+                    <p>{t.kota}</p>
+                  </div>
                 </div>
+
                 <div className="product-container">
                   {t.produk.map(p => {
                     return <>
-                      <div>
-                        <input type="checkbox" class="checkbox" defaultChecked={p.check} data-for="produk" data-id={p._id} onChange={checkProdukHandler} />
-                        {p.nama}
+                      <div className="d-flex flex-row card rounded-3 mb-2">
+                        <input
+                          type="checkbox"
+                          class="checkbox"
+                          defaultChecked={p.check}
+                          data-for="produk"
+                          data-id={p._id}
+                          onChange={checkProdukHandler}
+                        />
+
+                        <div className="d-flex flex-column flex-fill">
+                          <div className="d-flex flex-row">
+                            <img className="product-img rounded-1" src={p.gambar} alt={p.nama} />
+                            <div>
+                              <p>{p.nama}</p>
+                              {p.diskon > 0 ? (
+                                <>
+                                  <p className="fs-4 text-danger mb-0">{currency(p.harga * (1 - p.diskon / 100))}</p>
+                                  <small className="text-muted text-decoration-line-through">{currency(p.harga)}</small>
+                                  <p>Harga Grosir</p>
+                                </>
+                              ) : (
+                                <p className="mb-0 fs-4">{currency(p.harga)}</p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="d-flex flex-row ms-auto">
+                            <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button>
+                            
+                            <div className="d-flex">
+                              <button
+                                className="btn btn-link px-2"
+                                disabled={p.qty <= 1 ? 1 : 0}
+                                onClick={() => {
+                                  // this.props.addToCart(this.props.productDetail.id, -1);
+                                  // this.handlechange();
+                                }}
+                              >
+                                <FiMinus />
+                              </button>
+
+                              <input
+                                id="quantity"
+                                min="1"
+                                value={p.qty}
+                                type="number"
+                                className="form-control form-control-sm"
+                              // onChange={this.handleinput}
+                              />
+
+                              <button
+                                className="btn btn-link px-2"
+                                onClick={() => {
+                                  // this.props.addToCart(this.props.productDetail.id, 1);
+                                  // this.handlechange();
+                                }}
+                              >
+                                <FiPlus />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     </>
                   })}
