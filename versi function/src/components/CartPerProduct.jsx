@@ -24,6 +24,22 @@ export const CartPerProduct = () => {
     });
   }
 
+  const checkAllSyncHandler = () => {
+    const checkboxList = document.getElementsByClassName("checkbox");
+
+    let count = 0;
+    Array.from(document.getElementsByClassName("checkbox")).forEach(element => {
+      if (element.checked) count++;
+    });
+
+    const checkAll = document.getElementById("check-all");
+    if (count === checkboxList.length) {
+      checkAll.checked = true;
+    } else {
+      checkAll.checked = false;
+    }
+  }
+
   const checkTokoHandler = (e) => {
     const productContainer = e.target.parentNode.nextSibling;
 
@@ -35,7 +51,8 @@ export const CartPerProduct = () => {
       } else {
         input.checked = false;
       }
-    })
+    });
+    checkAllSyncHandler();
   }
 
   const checkProdukHandler = (e) => {
@@ -53,6 +70,7 @@ export const CartPerProduct = () => {
     } else {
       checkToko.checked = false;
     }
+    checkAllSyncHandler();
   }
 
   const deleteCheckedHandler = async () => {
@@ -76,9 +94,15 @@ export const CartPerProduct = () => {
     }).then(() => { setReRender(reRender + 1) });
   }
 
-  const deleteProdukHanlder = (e) => {
-    console.log(e.target.closest("[data-id]").dataset.id)
-  }
+  // const deleteProdukHanlder = (e) => {
+  //   const idProduk = e.target.closest("[data-id]").dataset.id;
+
+  //   fetch("http://localhost:8080/hapus-produk", {
+  //     method: "DELETE",
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({ idsProduk: [idProduk] })
+  //   }).then(() => { setReRender(reRender + 1) });
+  // }
 
   let handlechange = () => {
     setQty(qty);
@@ -102,7 +126,7 @@ export const CartPerProduct = () => {
   return (
     <>
       <div className="d-flex flex-row mb-3">
-        <input type="checkbox" className="p-2" name="cekAll" id="cekAll" onChange={checkAllHandler} />
+        <input type="checkbox" className="p-2" name="cekAll" id="check-all" onChange={checkAllHandler} />
         <h3 className="p-2">Pilih Semua</h3>
         <button
           className="btn btn-link px-2"
@@ -164,7 +188,7 @@ export const CartPerProduct = () => {
                           </div>
 
                           <div className="d-flex flex-row ms-auto">
-                            <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button>
+                            {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
                             
                             <div className="d-flex">
                               <button

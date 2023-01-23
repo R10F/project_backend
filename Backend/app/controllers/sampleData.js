@@ -16,8 +16,8 @@ exports.getProduk = (req, res) => {
 
 exports.deleteProduk = async (req, res) => {
   try {
+    await Toko.deleteMany({ _id: { $in: req.body.idsToko || [] } });
     await Produk.deleteMany({ _id: { $in: req.body.idsProduk } });
-    await Toko.deleteMany({ _id: { $in: req.body.idsToko } });
     
     res.status(200).send();
   } catch (err) {
