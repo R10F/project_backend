@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 8080;
 require("dotenv").config();
@@ -23,6 +24,8 @@ db.once("connected", () => {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended : true}));
 
 app.listen(port, () => {
   console.log(`Server Started at ${port}`);

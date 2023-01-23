@@ -18,6 +18,7 @@ const checkToko = async (req) => {
   // utk skenario B, karena di produk enggak ada ID toko, handle dari frontend dulu baru panggil checkToko?
   console.log(typeof req.body.toggleAll);
   //pakai package body-parser bisa terima bool lgsg?
+  
   if (req.body.toggleAll == "true") {
     const checkedProduk = updatedToko.produk;
     const updatedProduk = await Produk.updateMany(
@@ -30,6 +31,19 @@ const checkToko = async (req) => {
     return updatedToko;
   }
 };
+
+const editProduk = async (req) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+  // if (updatedData.qty)
+
+  console.log(updatedData);
+  //update dlm btk json {notes: "string"} atau {qty: number}
+  const updatedProduk = Produk.findByIdAndUpdate(
+    id, updatedData, {new: true}
+  );
+  return updatedProduk;
+}
 
 module.exports = (router) => {
   router.get("/api", async (req, res) => {
@@ -60,4 +74,12 @@ module.exports = (router) => {
       res.status(500).json({ message: err.message });
     }
   });
+  router.put("/api/editProduk/:id", async (req, res) => {
+    try{
+      const update = await editProduk(req);
+      res.status(200).json(update);
+    } catch (err) {
+      res.status(500).json({message: err.message});
+    }
+  })
 };
