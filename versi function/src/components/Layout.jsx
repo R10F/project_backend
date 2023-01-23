@@ -56,7 +56,9 @@ export const Layout = () => {
         <footer className="py-4 bg-dark mt-auto fixed-bottom">
           <div className="container-fluid px-4">
             <div className="d-flex align-items-center justify-content-center small">
-              <div className="text-white">Copyright &copy; Team Apple 2022</div>
+              <div className="text-white">
+                Copyright &copy; Team Apple {new Date().getFullYear()}
+              </div>
             </div>
           </div>
         </footer>

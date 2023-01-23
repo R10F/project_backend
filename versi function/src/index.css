@@ -12,3 +12,12 @@ input[type="checkbox"] {
   height: 75px;
   width: 75px;
 }
+
+#note {
+  width: 15rem;
+  box-sizing: border-box;
+}
+
+#note::placeholder {
+  font-size: 14px;
+}

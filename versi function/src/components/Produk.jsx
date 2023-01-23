@@ -46,30 +46,31 @@ export const Produk = (props) => {
   };
 
   const addNote = (e) => {
-    e.preventDefault();
-    setIsInput(false);
-    let noteProduk = document.querySelector("#note").value;
-    setInputValue(noteProduk);
+    if (e.key === "Enter") {
+      setIsInput(false);
+      let noteProduk = document.querySelector("#note").value;
+      setInputValue(noteProduk);
 
-    fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        note: noteProduk,
-      }),
-    })
-      .then((resp) => {
-        resp.json();
+      fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          note: noteProduk,
+        }),
       })
-      .then((data) => {});
+        .then((resp) => {
+          resp.json();
+        })
+        .then((data) => {});
+    }
   };
 
   return (
     <>
-      <div className="d-flex flex-row card rounded-3 mb-2">
+      <div className="d-flex flex-row card rounded-3 mb-2 ">
         <input
           type="checkbox"
-          className="checkbox"
+          className="checkbox m-3"
           defaultChecked={produk.check}
           data-for="produk"
           data-id={produk._id}
@@ -78,28 +79,47 @@ export const Produk = (props) => {
 
         <div className="d-flex flex-column flex-fill">
           <div className="d-flex flex-row">
-            <img
-              className="product-img rounded-1"
-              src={produk.gambar}
-              alt={produk.nama}
-            />
-            {isInput ? (
-              <form action="#" onSubmit={addNote}>
-                <input type="text" name="inputValue" id="note" />
-              </form>
-            ) : (
-              <div className="text-center">
-                <button
-                  type="button"
-                  className="btn btn-link text-decoration-none text-success"
-                  onClick={klikBtn}
-                >
-                  Tulis Catatan
-                </button>
-                <p>{produk.note || inputValue}</p>
+            <div class="d-flex flex-column ">
+              <div class="p-2">
+                <img
+                  className="product-img rounded-1 mt-3"
+                  src={produk.gambar}
+                  alt={produk.nama}
+                />
               </div>
-            )}
-            <div>
+              <div class="p-2">
+                {isInput ? (
+                  // <form action="#" onSubmit={addNote} className="mt-3">
+                  //   <input
+                  //     type="text"
+                  //     class="form-control"
+                  //     id="note"
+                  //     placeholder="pastikan tidak ada data pribadi"
+                  //     aria-describedby="basic-addon1"
+                  //   ></input>
+                  // </form>
+                  <textarea
+                    class="form-control"
+                    placeholder="Pastikan Tidak Mengandung data pribadi"
+                    id="note"
+                    onKeyDown={addNote}
+                  ></textarea>
+                ) : (
+                  <div>
+                    <button
+                      type="button"
+                      className="btn btn-link text-decoration-none text-success"
+                      onClick={klikBtn}
+                    >
+                      Tulis Catatan
+                    </button>
+                    <p className="ms-3">{produk.note || inputValue}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="mt-3">
               <p>{produk.nama}</p>
               {produk.diskon > 0 ? (
                 <>
@@ -117,10 +137,10 @@ export const Produk = (props) => {
             </div>
           </div>
 
-          <div className="d-flex flex-row ms-auto">
+          <div className="d-flex flex-row ms-auto ">
             {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
 
-            <div className="d-flex">
+            <div className="d-flex ">
               <button
                 className="btn btn-link px-2"
                 disabled={qty <= minQty ? true : false}
