@@ -9,19 +9,19 @@ export const Toko = (props) => {
 
   return (
     <>
-      <div className="card garis rounded-3 mb-4">
-        <div className="d-flex align-items-center mx-3">
+      <div className="card garis rounded-3 mb-4 shadow-sm">
+        <div className="d-flex w-100 align-items-center p-3">
           <input
             type="checkbox"
-            className="checkbox me-3"
+            className="checkbox me-3 mb-2"
             defaultChecked={toko.check}
             data-for="toko"
             data-id={toko._id}
             onChange={checkTokoHandler}
           />
-          <div>
+          <div className="m-0">
             <b>{toko.nama}</b>
-            <p>{toko.kota}</p>
+            <p className="m-0">{toko.kota}</p>
           </div>
         </div>
 

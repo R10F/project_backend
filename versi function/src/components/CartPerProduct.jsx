@@ -202,7 +202,7 @@ export const CartPerProduct = () => {
 
   return (
     <>
-      <div className="d-flex flex-row mb-3">
+      <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
         <input
           type="checkbox"
           className="p-2"
@@ -210,15 +210,15 @@ export const CartPerProduct = () => {
           id="check-all"
           onChange={checkAllHandler}
         />
-        <h3 className="p-2">Pilih Semua</h3>
-        {currency(hargaTotal)}
-        <button className="btn btn-link px-2" onClick={deleteCheckedHandler}>
+        <h3 className="p-2 m-0">Pilih Semua {currency(hargaTotal)}</h3>
+        
+        <button className="btn btn-link p-2 ms-auto me-2" onClick={deleteCheckedHandler}>
           <FiTrash2 />
         </button>
       </div>
       <div id="garis"></div>
 
-      <div className="toko mt-3">
+      <div className="toko mt-3 w-100 p-0">
         {toko !== undefined
           ? toko.map((t) => {
               return (

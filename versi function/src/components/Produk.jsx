@@ -63,14 +63,15 @@ export const Produk = (props) => {
         })
         .then((data) => {});
     }
+    console.log(produk.note);
   };
 
   return (
     <>
-      <div className="d-flex flex-row card rounded-3 mb-2 ">
+      <div className="d-flex flex-row card rounded-3 mb-2 p-3">
         <input
           type="checkbox"
-          className="checkbox m-3"
+          className="checkbox"
           defaultChecked={produk.check}
           data-for="produk"
           data-id={produk._id}
@@ -79,48 +80,16 @@ export const Produk = (props) => {
 
         <div className="d-flex flex-column flex-fill">
           <div className="d-flex flex-row">
-            <div class="d-flex flex-column ">
-              <div class="p-2">
-                <img
-                  className="product-img rounded-1 mt-3"
-                  src={produk.gambar}
-                  alt={produk.nama}
-                />
-              </div>
-              <div class="p-2">
-                {isInput ? (
-                  // <form action="#" onSubmit={addNote} className="mt-3">
-                  //   <input
-                  //     type="text"
-                  //     class="form-control"
-                  //     id="note"
-                  //     placeholder="pastikan tidak ada data pribadi"
-                  //     aria-describedby="basic-addon1"
-                  //   ></input>
-                  // </form>
-                  <textarea
-                    class="form-control"
-                    placeholder="Pastikan Tidak Mengandung data pribadi"
-                    id="note"
-                    onKeyDown={addNote}
-                  ></textarea>
-                ) : (
-                  <div>
-                    <button
-                      type="button"
-                      className="btn btn-link text-decoration-none text-success"
-                      onClick={klikBtn}
-                    >
-                      Tulis Catatan
-                    </button>
-                    <p className="ms-3">{produk.note || inputValue}</p>
-                  </div>
-                )}
-              </div>
+            <div className="p-2">
+              <img
+                className="product-img rounded-1"
+                src={produk.gambar}
+                alt={produk.nama}
+              />
             </div>
 
-            <div className="mt-3">
-              <p>{produk.nama}</p>
+            <div>
+              <p className="m-0">{produk.nama}</p>
               {produk.diskon > 0 ? (
                 <>
                   <p className="fs-4 text-danger mb-0">
@@ -137,10 +106,44 @@ export const Produk = (props) => {
             </div>
           </div>
 
-          <div className="d-flex flex-row ms-auto ">
+          <div className="d-flex flex-column flex-md-row align-items-end">
             {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
+            <div className="me-auto p-2">
+              {isInput ? (
+                // <form action="#" onSubmit={addNote} className="mt-3">
+                //   <input
+                //     type="text"
+                //     class="form-control"
+                //     id="note"
+                //     placeholder="pastikan tidak ada data pribadi"
+                //     aria-describedby="basic-addon1"
+                //   ></input>
+                // </form>
+                <textarea
+                  className="form-control"
+                  placeholder="Pastikan Tidak Mengandung data pribadi"
+                  id="note"
+                  onKeyDown={addNote}
+                ></textarea>
+              ) : (
+                <div>
+                  <button
+                    type="button"
+                    className="btn btn-link text-decoration-none text-success p-0 text-start"
+                    onClick={klikBtn}
+                  >
+                    Tulis Catatan
+                  </button>
+                  <p className="m-0">{produk.note || inputValue}</p>
+                </div>
+              )}
+            </div>
 
-            <div className="d-flex ">
+            <div className="d-flex align-items-center p-2">
+              {/* button trash */}
+              {/* <button className="btn btn-link">
+                <FiTrash2 />
+              </button> */}
               <button
                 className="btn btn-link px-2"
                 disabled={qty <= minQty ? true : false}
@@ -157,7 +160,7 @@ export const Produk = (props) => {
                 max={maxQty}
                 value={qty}
                 type="number"
-                className="form-control form-control-sm"
+                className="form-control form-control-sm h-25"
                 onChange={inputHandler}
               />
 
