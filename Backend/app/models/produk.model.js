@@ -22,7 +22,8 @@ const produkSchema = new Schema({
     'check': {
         type: Boolean,
         default: false
-    }
+    },
+    'note': String
 })
 
 const Produk = mongoose.model('Produk', produkSchema);
