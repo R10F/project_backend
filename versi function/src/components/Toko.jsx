@@ -12,7 +12,7 @@ export const Toko = (props) => {
       <div className="d-flex align-items-center">
         <input
           type="checkbox"
-          class="checkbox"
+          className="checkbox"
           defaultChecked={toko.check}
           data-for="toko"
           data-id={toko._id}

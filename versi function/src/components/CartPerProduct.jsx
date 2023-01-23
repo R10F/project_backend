@@ -24,16 +24,37 @@ export const CartPerProduct = () => {
       });
   }, [reRender]);
 
-  const checkAllHandler = (e) => {
+  const checkAllHandler = async (e) => {
     const checkboxList = document.getElementsByClassName("checkbox");
+    let idsToko = [];
 
     Array.from(checkboxList).forEach(element => {
+      if(element.dataset.for === "toko"){
+        idsToko.push(element.dataset.id);
+      }
       if (e.target.checked) {
         element.checked = true;
       } else {
         element.checked = false;
       }
     });
+    console.log(idsToko);
+    let promises = [];
+    for (const idToko of idsToko){
+      promises.push(
+        fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+          method: "PUT",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            check: e.target.checked,
+            toggleAll: true
+          })
+        })
+      )
+    }
+    Promise.all(promises)
+    .then(() => { setReRender(reRender + 1) })
+    .catch(err => console.log('error', err));
   }
 
   const checkAllSyncHandler = () => {
@@ -54,6 +75,7 @@ export const CartPerProduct = () => {
 
   const checkTokoHandler = (e) => {
     const productContainer = e.target.parentNode.nextSibling;
+    //classname =  product-container
 
     Array.from(productContainer.children).forEach(element => {
       const input = element.getElementsByTagName('input')[0];
@@ -64,11 +86,23 @@ export const CartPerProduct = () => {
         input.checked = false;
       }
     });
+
+    const idToko = e.target.dataset.id
+    fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        check: e.target.checked,
+        toggleAll: true
+      })
+    })
+
     checkAllSyncHandler();
   }
 
   const checkProdukHandler = (e) => {
     const productContainer = e.target.parentNode.parentNode;
+    //class product-container dari toko
 
     let count = 0;
     Array.from(productContainer.children).forEach(element => {
@@ -77,11 +111,35 @@ export const CartPerProduct = () => {
     });
 
     const checkToko = productContainer.previousSibling.getElementsByTagName('input')[0];
+    // checkbox toko
+    let newCheckState;
     if (count === productContainer.children.length) {
-      checkToko.checked = true;
+      newCheckState = true;
     } else {
-      checkToko.checked = false;
+      newCheckState = false;
     }
+    if (checkToko.checked ^ newCheckState){
+      const idToko = checkToko.dataset.id;
+      fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          check: e.target.checked,
+          toggleAll: false
+        })
+      })
+    }
+    checkToko.checked = newCheckState;
+    
+    const idProduk = e.target.dataset.id;
+    fetch(`http://localhost:8080/api/checkProduk/${idProduk}`, {
+      method: "PUT",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        check: e.target.checked,
+      })
+    })
+    
     checkAllSyncHandler();
   }
 

@@ -19,7 +19,7 @@ const checkToko = async (req) => {
   console.log(typeof req.body.toggleAll);
   //pakai package body-parser bisa terima bool lgsg?
   
-  if (req.body.toggleAll == "true") {
+  if (req.body.toggleAll === true){
     const checkedProduk = updatedToko.produk;
     const updatedProduk = await Produk.updateMany(
       { _id: { $in: checkedProduk } },

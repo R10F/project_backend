@@ -42,7 +42,7 @@ export const Produk = (props) => {
     <div className="d-flex flex-row card rounded-3 mb-2">
       <input
         type="checkbox"
-        class="checkbox"
+        className="checkbox"
         defaultChecked={produk.check}
         data-for="produk"
         data-id={produk._id}
