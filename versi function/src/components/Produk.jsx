@@ -12,6 +12,9 @@ export const Produk = (props) => {
 
   const [qty, setQty] = useState(produk.qty);
 
+  const [isInput, setIsInput] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
     setQty(newQty);
@@ -29,75 +32,128 @@ export const Produk = (props) => {
   const updateQtyHandler = (newQty, delta) => {
     fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
       method: "PUT",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ qty: newQty })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ qty: newQty }),
     }).then(() => {
       const hargaBersih = produk.harga * (1 - produk.diskon / 100);
       const subTotal = delta * hargaBersih;
       setHargaTotal(hargaTotal + subTotal);
     });
-  }
+  };
 
-  return <>
-    <div className="d-flex flex-row card rounded-3 mb-2">
-      <input
-        type="checkbox"
-        className="checkbox"
-        defaultChecked={produk.check}
-        data-for="produk"
-        data-id={produk._id}
-        onChange={checkProdukHandler}
-      />
+  const klikBtn = () => {
+    setIsInput(true);
+  };
 
-      <div className="d-flex flex-column flex-fill">
-        <div className="d-flex flex-row">
-          <img className="product-img rounded-1" src={produk.gambar} alt={produk.nama} />
-          <div>
-            <p>{produk.nama}</p>
-            {produk.diskon > 0 ? (
-              <>
-                <p className="fs-4 text-danger mb-0">{currency(produk.harga * (1 - produk.diskon / 100))}</p>
-                <small className="text-muted text-decoration-line-through">{currency(produk.harga)}</small>
-                <p>Harga Grosir</p>
-              </>
-            ) : (
-              <p className="mb-0 fs-4">{currency(produk.harga)}</p>
-            )}
-          </div>
-        </div>
+  const addNote = (e) => {
+    e.preventDefault();
+    setIsInput(false);
+    let noteProduk = document.querySelector("#note").value;
+    setInputValue(noteProduk);
 
-        <div className="d-flex flex-row ms-auto">
-          {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
+    fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        note: noteProduk,
+      }),
+    })
+      .then((resp) => {
+        resp.json();
+      })
+      .then((data) => {});
+  };
 
-          <div className="d-flex">
-            <button
-              className="btn btn-link px-2"
-              disabled={qty <= minQty ? true : false}
-              onClick={() => { changeByButtonHandler(-1) }}
-            >
-              <FiMinus />
-            </button>
+  return (
+    <>
+      <div className="d-flex flex-row card rounded-3 mb-2">
+        <input
+          type="checkbox"
+          className="checkbox"
+          defaultChecked={produk.check}
+          data-for="produk"
+          data-id={produk._id}
+          onChange={checkProdukHandler}
+        />
 
-            <input
-              id="quantity"
-              min={minQty}
-              max={maxQty}
-              value={qty}
-              type="number"
-              className="form-control form-control-sm"
-              onChange={inputHandler}
+        <div className="d-flex flex-column flex-fill">
+          <div className="d-flex flex-row">
+            <img
+              className="product-img rounded-1"
+              src={produk.gambar}
+              alt={produk.nama}
             />
+            {isInput ? (
+              <form action="#" onSubmit={addNote}>
+                <input type="text" name="inputValue" id="note" />
+              </form>
+            ) : (
+              <div className="text-center">
+                <button
+                  type="button"
+                  className="btn btn-link text-decoration-none text-success"
+                  onClick={klikBtn}
+                >
+                  Tulis Catatan
+                </button>
+                <p>{produk.note || inputValue}</p>
+              </div>
+            )}
+            <div>
+              <p>{produk.nama}</p>
+              {produk.diskon > 0 ? (
+                <>
+                  <p className="fs-4 text-danger mb-0">
+                    {currency(produk.harga * (1 - produk.diskon / 100))}
+                  </p>
+                  <small className="text-muted text-decoration-line-through">
+                    {currency(produk.harga)}
+                  </small>
+                  <p>Harga Grosir</p>
+                </>
+              ) : (
+                <p className="mb-0 fs-4">{currency(produk.harga)}</p>
+              )}
+            </div>
+          </div>
 
-            <button
-              className="btn btn-link px-2"
-              disabled={qty >= maxQty ? true : false}
-              onClick={() => { changeByButtonHandler(1) }}
-            >
-              <FiPlus />
-            </button>
+          <div className="d-flex flex-row ms-auto">
+            {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
+
+            <div className="d-flex">
+              <button
+                className="btn btn-link px-2"
+                disabled={qty <= minQty ? true : false}
+                onClick={() => {
+                  changeByButtonHandler(-1);
+                }}
+              >
+                <FiMinus />
+              </button>
+
+              <input
+                id="quantity"
+                min={minQty}
+                max={maxQty}
+                value={qty}
+                type="number"
+                className="form-control form-control-sm"
+                onChange={inputHandler}
+              />
+
+              <button
+                className="btn btn-link px-2"
+                disabled={qty >= maxQty ? true : false}
+                onClick={() => {
+                  changeByButtonHandler(1);
+                }}
+              >
+                <FiPlus />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </>;
-}
+    </>
+  );
+};

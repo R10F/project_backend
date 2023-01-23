@@ -14,10 +14,10 @@ export const CartPerProduct = () => {
       .then((res) => res.json())
       .then((data) => {
         let tempHarga = 0;
-        data.forEach(toko => {
-          toko.produk.forEach(item => {
-            tempHarga += (item.harga * (1 - item.diskon / 100)) * item.qty;
-          })
+        data.forEach((toko) => {
+          toko.produk.forEach((item) => {
+            tempHarga += item.harga * (1 - item.diskon / 100) * item.qty;
+          });
         });
         setToko(data);
         setHargaTotal(tempHarga);
@@ -28,8 +28,8 @@ export const CartPerProduct = () => {
     const checkboxList = document.getElementsByClassName("checkbox");
     let idsToko = [];
 
-    Array.from(checkboxList).forEach(element => {
-      if(element.dataset.for === "toko"){
+    Array.from(checkboxList).forEach((element) => {
+      if (element.dataset.for === "toko") {
         idsToko.push(element.dataset.id);
       }
       if (e.target.checked) {
@@ -40,28 +40,30 @@ export const CartPerProduct = () => {
     });
     console.log(idsToko);
     let promises = [];
-    for (const idToko of idsToko){
+    for (const idToko of idsToko) {
       promises.push(
         fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
           method: "PUT",
-          headers: { 'Content-Type': 'application/json' },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             check: e.target.checked,
-            toggleAll: true
-          })
+            toggleAll: true,
+          }),
         })
-      )
+      );
     }
     Promise.all(promises)
-    .then(() => { setReRender(reRender + 1) })
-    .catch(err => console.log('error', err));
-  }
+      .then(() => {
+        setReRender(reRender + 1);
+      })
+      .catch((err) => console.log("error", err));
+  };
 
   const checkAllSyncHandler = () => {
     const checkboxList = document.getElementsByClassName("checkbox");
 
     let count = 0;
-    Array.from(checkboxList).forEach(element => {
+    Array.from(checkboxList).forEach((element) => {
       if (element.checked) count++;
     });
 
@@ -71,14 +73,14 @@ export const CartPerProduct = () => {
     } else {
       checkAll.checked = false;
     }
-  }
+  };
 
   const checkTokoHandler = (e) => {
     const productContainer = e.target.parentNode.nextSibling;
     //classname =  product-container
 
-    Array.from(productContainer.children).forEach(element => {
-      const input = element.getElementsByTagName('input')[0];
+    Array.from(productContainer.children).forEach((element) => {
+      const input = element.getElementsByTagName("input")[0];
 
       if (e.target.checked) {
         input.checked = true;
@@ -87,30 +89,31 @@ export const CartPerProduct = () => {
       }
     });
 
-    const idToko = e.target.dataset.id
+    const idToko = e.target.dataset.id;
     fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
       method: "PUT",
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         check: e.target.checked,
-        toggleAll: true
-      })
-    })
+        toggleAll: true,
+      }),
+    });
 
     checkAllSyncHandler();
-  }
+  };
 
   const checkProdukHandler = (e) => {
     const productContainer = e.target.parentNode.parentNode;
     //class product-container dari toko
 
     let count = 0;
-    Array.from(productContainer.children).forEach(element => {
-      const input = element.getElementsByTagName('input')[0];
+    Array.from(productContainer.children).forEach((element) => {
+      const input = element.getElementsByTagName("input")[0];
       if (input.checked) count++;
     });
 
-    const checkToko = productContainer.previousSibling.getElementsByTagName('input')[0];
+    const checkToko =
+      productContainer.previousSibling.getElementsByTagName("input")[0];
     // checkbox toko
     let newCheckState;
     if (count === productContainer.children.length) {
@@ -118,51 +121,55 @@ export const CartPerProduct = () => {
     } else {
       newCheckState = false;
     }
-    if (checkToko.checked ^ newCheckState){
+    if (checkToko.checked ^ newCheckState) {
       const idToko = checkToko.dataset.id;
       fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
         method: "PUT",
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           check: e.target.checked,
-          toggleAll: false
-        })
-      })
+          toggleAll: false,
+        }),
+      });
     }
     checkToko.checked = newCheckState;
-    
+
     const idProduk = e.target.dataset.id;
     fetch(`http://localhost:8080/api/checkProduk/${idProduk}`, {
       method: "PUT",
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         check: e.target.checked,
-      })
-    })
-    
+      }),
+    });
+
     checkAllSyncHandler();
-  }
+  };
 
   const deleteCheckedHandler = async () => {
     let idsToko = [];
     let idsProduk = [];
 
-    Array.from(document.getElementsByClassName("checkbox")).forEach(element => {
-      if (element.checked) {
-        if (element.dataset.for === "toko") {
-          idsToko.push(element.dataset.id);
-        } else {
-          idsProduk.push(element.dataset.id);
+    Array.from(document.getElementsByClassName("checkbox")).forEach(
+      (element) => {
+        if (element.checked) {
+          if (element.dataset.for === "toko") {
+            idsToko.push(element.dataset.id);
+          } else {
+            idsProduk.push(element.dataset.id);
+          }
         }
       }
-    });
+    );
 
     fetch("http://localhost:8080/hapus-produk", {
       method: "DELETE",
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ idsToko, idsProduk })
-    }).then(() => { setReRender(reRender + 1) });
-  }
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idsToko, idsProduk }),
+    }).then(() => {
+      setReRender(reRender + 1);
+    });
+  };
 
   const currency = (harga) => {
     return new Intl.NumberFormat("id-ID", {
@@ -170,7 +177,7 @@ export const CartPerProduct = () => {
       currency: "IDR",
       minimumFractionDigits: 0,
     }).format(harga);
-  }
+  };
 
   // const deleteProdukHanlder = (e) => {
   //   const idProduk = e.target.closest("[data-id]").dataset.id;
@@ -193,34 +200,41 @@ export const CartPerProduct = () => {
   //   setQty(e.target.value);
   // };
 
-  return <>
-    <div className="d-flex flex-row mb-3">
-      <input type="checkbox" className="p-2" name="cekAll" id="check-all" onChange={checkAllHandler} />
-      <h3 className="p-2">Pilih Semua</h3>{currency(hargaTotal)}
-      <button
-        className="btn btn-link px-2"
-        onClick={deleteCheckedHandler}
-      >
-        <FiTrash2 />
-      </button>
-    </div>
-    <div id="garis"></div>
+  return (
+    <>
+      <div className="d-flex flex-row mb-3">
+        <input
+          type="checkbox"
+          className="p-2"
+          name="cekAll"
+          id="check-all"
+          onChange={checkAllHandler}
+        />
+        <h3 className="p-2">Pilih Semua</h3>
+        {currency(hargaTotal)}
+        <button className="btn btn-link px-2" onClick={deleteCheckedHandler}>
+          <FiTrash2 />
+        </button>
+      </div>
+      <div id="garis"></div>
 
-    <div className="toko mt-3">
-      {toko !== undefined ? (
-        toko.map(t => {
-          return <Toko
-            key={t._id}
-            toko={t}
-            currency={currency}
-            checkTokoHandler={checkTokoHandler}
-            checkProdukHandler={checkProdukHandler}
-            stateHargaTotal={[hargaTotal, setHargaTotal]}
-          />
-        })
-      ) : ""}
-    </div>
-    {/* <>
+      <div className="toko mt-3">
+        {toko !== undefined
+          ? toko.map((t) => {
+              return (
+                <Toko
+                  key={t._id}
+                  toko={t}
+                  currency={currency}
+                  checkTokoHandler={checkTokoHandler}
+                  checkProdukHandler={checkProdukHandler}
+                  stateHargaTotal={[hargaTotal, setHargaTotal]}
+                />
+              );
+            })
+          : ""}
+      </div>
+      {/* <>
       <div className="d-flex flex-row mb-3 mt-5">
         <input type="checkbox" className="p-2" name="cekToko" />
         <div>
@@ -312,5 +326,6 @@ export const CartPerProduct = () => {
         </div>
       </>
     </> */}
-  </>;
+    </>
+  );
 };
