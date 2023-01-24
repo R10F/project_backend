@@ -1,17 +1,18 @@
 import { useState } from "react";
+import { currency } from "../utils/utils";
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
 
 export const Produk = (props) => {
   const produk = props.produk;
-  const currency = props.currency;
+  const [totalQty, setTotalQty] = props.stateTotalQty;
   const [hargaTotal, setHargaTotal] = props.stateHargaTotal;
+  const [hargaDiskon, setHargaDiskon] = props.stateHargaDiskon;
   const checkProdukHandler = props.checkProdukHandler;
 
   const minQty = 1;
   const maxQty = 7;
 
   const [qty, setQty] = useState(produk.qty);
-
   const [isInput, setIsInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
 
@@ -35,9 +36,9 @@ export const Produk = (props) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
     }).then(() => {
-      const hargaBersih = produk.harga * (1 - produk.diskon / 100);
-      const subTotal = delta * hargaBersih;
-      setHargaTotal(hargaTotal + subTotal);
+      setTotalQty(totalQty + delta);
+      setHargaTotal(hargaTotal + (delta * produk.harga));
+      setHargaDiskon(hargaDiskon + (delta * produk.harga * produk.diskon / 100));
     });
   };
 

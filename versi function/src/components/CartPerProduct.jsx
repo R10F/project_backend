@@ -1,26 +1,35 @@
 import { useState, useEffect } from "react";
-// import useFetch from "../useFetch";
-import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
+import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
+import { RingkasanBelanja } from "./RingkasanBelanja";
 
 export const CartPerProduct = () => {
   const [toko, setToko] = useState([]);
   const [reRender, setReRender] = useState(0);
+  const [totalQty, setTotalQty] = useState(0);
   const [hargaTotal, setHargaTotal] = useState(0);
-  // let [qty, setQty] = useState(1);
+  const [hargaDiskon, setHargaDiskon] = useState(0);
 
   useEffect(() => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
-        let tempHarga = 0;
+        let tempTotalQty = 0;
+        let tempHargaTotal = 0;
+        let tempHargaDiskon = 0;
         data.forEach((toko) => {
           toko.produk.forEach((item) => {
-            tempHarga += item.harga * (1 - item.diskon / 100) * item.qty;
+            tempTotalQty += item.qty;
+            tempHargaTotal += item.harga * item.qty;
+            tempHargaDiskon += item.harga * item.qty * item.diskon / 100;
+            if (item.check) {
+            }
           });
         });
         setToko(data);
-        setHargaTotal(tempHarga);
+        setTotalQty(tempTotalQty);
+        setHargaTotal(tempHargaTotal);
+        setHargaDiskon(tempHargaDiskon);
         checkAllSyncHandler();
       });
   }, [reRender]);
@@ -142,6 +151,8 @@ export const CartPerProduct = () => {
       body: JSON.stringify({
         check: e.target.checked,
       }),
+    }).then(() => {
+
     });
 
     checkAllSyncHandler();
@@ -172,35 +183,6 @@ export const CartPerProduct = () => {
     });
   };
 
-  const currency = (harga) => {
-    return new Intl.NumberFormat("id-ID", {
-      style: "currency",
-      currency: "IDR",
-      minimumFractionDigits: 0,
-    }).format(harga);
-  };
-
-  // const deleteProdukHanlder = (e) => {
-  //   const idProduk = e.target.closest("[data-id]").dataset.id;
-
-  //   fetch("http://localhost:8080/hapus-produk", {
-  //     method: "DELETE",
-  //     headers: { 'Content-Type': 'application/json' },
-  //     body: JSON.stringify({ idsProduk: [idProduk] })
-  //   }).then(() => { setReRender(reRender + 1) });
-  // }
-
-  // let handlechange = () => {
-  //   setQty(qty);
-  // };
-
-  // const handleInput = (e) => {
-  //   let newQty = e.target.value;
-  //   if (newQty <= 0 && newQty !== "") return;
-  //   if (newQty === "") newQty = 0;
-  //   setQty(e.target.value);
-  // };
-
   return (
     <>
       <div className="row">
@@ -227,10 +209,11 @@ export const CartPerProduct = () => {
                   <Toko
                     key={t._id}
                     toko={t}
-                    currency={currency}
                     checkTokoHandler={checkTokoHandler}
                     checkProdukHandler={checkProdukHandler}
+                    stateTotalQty={[totalQty, setTotalQty]}
                     stateHargaTotal={[hargaTotal, setHargaTotal]}
+                    stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
                   />
                 );
               })
@@ -238,11 +221,11 @@ export const CartPerProduct = () => {
           </div>
         </div>
         <div className="col-md-4">
-          <div className="card">
-            <h3 className="fs-5">Ringkasan Belanja</h3>
-            <p>Total Harga (11 barang)</p>
-            {currency(hargaTotal)}
-          </div>
+          <RingkasanBelanja
+            totalQty={totalQty}
+            hargaTotal={hargaTotal}
+            hargaDiskon={hargaDiskon}
+          />
         </div>
       </div>
 

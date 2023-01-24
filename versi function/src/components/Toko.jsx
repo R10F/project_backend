@@ -1,9 +1,11 @@
+import { currency } from "../utils/utils";
 import { Produk } from "./Produk";
 
 export const Toko = (props) => {
   const toko = props.toko;
-  const currency = props.currency;
+  const stateTotalQty = props.stateTotalQty;
   const stateHargaTotal = props.stateHargaTotal;
+  const stateHargaDiskon = props.stateHargaDiskon;
   const checkTokoHandler = props.checkTokoHandler;
   const checkProdukHandler = props.checkProdukHandler;
 
@@ -32,7 +34,9 @@ export const Toko = (props) => {
                 key={produk._id}
                 produk={produk}
                 currency={currency}
+                stateTotalQty={stateTotalQty}
                 stateHargaTotal={stateHargaTotal}
+                stateHargaDiskon={stateHargaDiskon}
                 checkProdukHandler={checkProdukHandler}
               />
             );
