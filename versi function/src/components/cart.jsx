@@ -30,7 +30,7 @@ export const Cart = () => {
           toko.produk.forEach((item) => {
             tempTotalQty += item.qty;
             tempHargaTotal += item.harga * item.qty;
-            tempHargaDiskon += item.harga * item.qty * item.diskon / 100;
+            tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
             if (item.check) {
             }
           });
@@ -160,9 +160,7 @@ export const Cart = () => {
       body: JSON.stringify({
         check: e.target.checked,
       }),
-    }).then(() => {
-
-    });
+    }).then(() => {});
 
     checkAllSyncHandler();
   };
@@ -226,7 +224,10 @@ export const Cart = () => {
                       />
                       <h3 className="fs-6 p-2 m-0">Pilih Semua</h3>
 
-                      <button className="delete-all btn btn-link p-2 ms-auto me-2" onClick={deleteCheckedHandler}>
+                      <button
+                        className="delete-all btn btn-link p-2 ms-auto me-2"
+                        onClick={deleteCheckedHandler}
+                      >
                         <FiTrash2 /> <span>Hapus</span>
                       </button>
                     </div>
@@ -261,4 +262,4 @@ export const Cart = () => {
       </article>
     </main>
   );
-};   
+};

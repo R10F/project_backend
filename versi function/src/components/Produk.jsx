@@ -15,6 +15,7 @@ export const Produk = (props) => {
   const [qty, setQty] = useState(produk.qty);
   const [isInput, setIsInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [buttonText, setButtonText] = useState("Tulis Catatan");
 
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
@@ -37,19 +38,32 @@ export const Produk = (props) => {
       body: JSON.stringify({ qty: newQty }),
     }).then(() => {
       setTotalQty(totalQty + delta);
-      setHargaTotal(hargaTotal + (delta * produk.harga));
-      setHargaDiskon(hargaDiskon + (delta * produk.harga * produk.diskon / 100));
+      setHargaTotal(hargaTotal + delta * produk.harga);
+      setHargaDiskon(
+        hargaDiskon + (delta * produk.harga * produk.diskon) / 100
+      );
     });
   };
 
-  const klikBtn = () => {
+  const handleButtonClick = () => {
+    if (inputValue === "") {
+      setButtonText("Ubah");
+    } else {
+      setButtonText("Tulis Catatan");
+    }
     setIsInput(true);
+  };
+
+  const handleInputChange = () => {
+    setInputValue(inputValue);
+    setButtonText("Ubah");
   };
 
   const addNote = (e) => {
     if (e.key === "Enter") {
       setIsInput(false);
       let noteProduk = document.querySelector("#note").value;
+
       setInputValue(noteProduk);
 
       fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
@@ -111,31 +125,27 @@ export const Produk = (props) => {
             {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
             <div className="product-note me-auto p-2">
               {isInput ? (
-                // <form action="#" onSubmit={addNote} className="mt-3">
-                //   <input
-                //     type="text"
-                //     class="form-control"
-                //     id="note"
-                //     placeholder="pastikan tidak ada data pribadi"
-                //     aria-describedby="basic-addon1"
-                //   ></input>
-                // </form>
                 <textarea
                   className="form-control"
                   placeholder="Pastikan Tidak Mengandung data pribadi"
                   id="note"
                   onKeyDown={addNote}
+                  onChange={handleInputChange}
                 ></textarea>
               ) : (
-                <div>
-                  <button
-                    type="button"
-                    className="btn btn-link text-decoration-none text-success p-0 text-start"
-                    onClick={klikBtn}
-                  >
-                    Tulis Catatan
-                  </button>
-                  <p className="m-0">{produk.note || inputValue}</p>
+                <div class="d-flex flex-row mb-3">
+                  <div class="p-2">
+                    <p className="m-0">{produk.note || inputValue}</p>
+                  </div>
+                  <div class="p-2">
+                    <button
+                      type="button"
+                      className="btn btn-link text-decoration-none text-success p-0 text-start"
+                      onClick={handleButtonClick}
+                    >
+                      {buttonText}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
