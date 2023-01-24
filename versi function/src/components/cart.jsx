@@ -202,7 +202,7 @@ export const Cart = () => {
 
           <div className="row">
             <div className="col-md-8">
-              {toko !== undefined ?
+              {toko !== undefined &&
                 (toko.length === 0 ? (
                   <div className="alert alert-warning">
                     Oops, shopping cart is empty! &nbsp;
@@ -247,7 +247,7 @@ export const Cart = () => {
                       })}
                     </div>
                   </>
-                )) : ""}
+                ))}
             </div>
             <div className="col-md-4">
               <RingkasanBelanja
