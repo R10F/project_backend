@@ -3,7 +3,8 @@ input[type="checkbox"] {
   height: 25px;
 }
 
-.delete-all {}
+.delete-all {
+}
 
 .product-note {
   word-break: break-word;

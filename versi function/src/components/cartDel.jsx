@@ -31,7 +31,7 @@ export const Carts = () => {
                 Add something to your cart !
               </button>
             </div>
-            {data && <CartPerProduct data={data} />}
+            {/* {data && <CartPerProduct data={data} />} */}
           </div>
         </article>
       </>
