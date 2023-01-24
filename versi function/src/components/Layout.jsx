@@ -1,4 +1,4 @@
-import { Cart } from "./cart";
+import { Cart } from "./Cart";
 
 export const Layout = () => {
   return (
@@ -52,19 +52,19 @@ export const Layout = () => {
             </div>
           </div>
         </nav>
-
-        <footer className="py-4 bg-dark mt-auto fixed-bottom">
-          <div className="container-fluid px-4">
-            <div className="d-flex align-items-center justify-content-center small">
-              <div className="text-white">
-                Copyright &copy; Team Apple {new Date().getFullYear()}
-              </div>
-            </div>
-          </div>
-        </footer>
       </header>
 
       <Cart />
+      
+      <footer className="py-4 bg-dark mt-auto fixed-bottom">
+        <div className="container-fluid px-4">
+          <div className="d-flex align-items-center justify-content-center small">
+            <div className="text-white">
+              Copyright &copy; Team Apple {new Date().getFullYear()}
+            </div>
+          </div>
+        </div>
+      </footer>
     </>
   );
 };
