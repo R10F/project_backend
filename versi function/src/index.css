@@ -3,6 +3,16 @@ input[type="checkbox"] {
   height: 25px;
 }
 
+.delete-all {}
+
+.product-note {
+  word-break: break-word;
+}
+
+.qty-wrapper {
+  min-width: 150px;
+}
+
 .garis {
   border-top-width: 8px;
   border-top-color: #f3f4f5;

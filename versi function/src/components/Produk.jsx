@@ -92,12 +92,12 @@ export const Produk = (props) => {
               <p className="m-0">{produk.nama}</p>
               {produk.diskon > 0 ? (
                 <>
-                  <p className="fs-4 text-danger mb-0">
-                    {currency(produk.harga * (1 - produk.diskon / 100))}
-                  </p>
                   <small className="text-muted text-decoration-line-through">
                     {currency(produk.harga)}
                   </small>
+                  <p className="d-inline-block fs-4 text-danger ms-2 mb-0">
+                    {currency(produk.harga * (1 - produk.diskon / 100))}
+                  </p>
                   <p>Harga Grosir</p>
                 </>
               ) : (
@@ -106,9 +106,9 @@ export const Produk = (props) => {
             </div>
           </div>
 
-          <div className="d-flex flex-column flex-md-row align-items-end">
+          <div className="d-flex align-items-center">
             {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
-            <div className="me-auto p-2">
+            <div className="product-note me-auto p-2">
               {isInput ? (
                 // <form action="#" onSubmit={addNote} className="mt-3">
                 //   <input
@@ -139,7 +139,7 @@ export const Produk = (props) => {
               )}
             </div>
 
-            <div className="d-flex align-items-center p-2">
+            <div className="qty-wrapper d-flex align-items-center p-2">
               {/* button trash */}
               {/* <button className="btn btn-link">
                 <FiTrash2 />

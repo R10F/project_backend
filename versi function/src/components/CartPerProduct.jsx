@@ -21,6 +21,7 @@ export const CartPerProduct = () => {
         });
         setToko(data);
         setHargaTotal(tempHarga);
+        checkAllSyncHandler();
       });
   }, [reRender]);
 
@@ -202,38 +203,49 @@ export const CartPerProduct = () => {
 
   return (
     <>
-      <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
-        <input
-          type="checkbox"
-          className="p-2"
-          name="cekAll"
-          id="check-all"
-          onChange={checkAllHandler}
-        />
-        <h3 className="p-2 m-0">Pilih Semua {currency(hargaTotal)}</h3>
-        
-        <button className="btn btn-link p-2 ms-auto me-2" onClick={deleteCheckedHandler}>
-          <FiTrash2 />
-        </button>
-      </div>
-      <div id="garis"></div>
+      <div className="row">
+        <div className="col-md-8">
+          <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
+            <input
+              type="checkbox"
+              className="p-2"
+              name="cekAll"
+              id="check-all"
+              onChange={checkAllHandler}
+            />
+            <h3 className="fs-6 p-2 m-0">Pilih Semua</h3>
 
-      <div className="toko mt-3 w-100 p-0">
-        {toko !== undefined
-          ? toko.map((t) => {
-              return (
-                <Toko
-                  key={t._id}
-                  toko={t}
-                  currency={currency}
-                  checkTokoHandler={checkTokoHandler}
-                  checkProdukHandler={checkProdukHandler}
-                  stateHargaTotal={[hargaTotal, setHargaTotal]}
-                />
-              );
-            })
-          : ""}
+            <button className="delete-all btn btn-link p-2 ms-auto me-2" onClick={deleteCheckedHandler}>
+              <FiTrash2 /> <span>Hapus</span>
+            </button>
+          </div>
+
+          <div className="toko mt-3 w-100 p-0">
+            {toko !== undefined
+              ? toko.map((t) => {
+                return (
+                  <Toko
+                    key={t._id}
+                    toko={t}
+                    currency={currency}
+                    checkTokoHandler={checkTokoHandler}
+                    checkProdukHandler={checkProdukHandler}
+                    stateHargaTotal={[hargaTotal, setHargaTotal]}
+                  />
+                );
+              })
+              : ""}
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card">
+            <h3 className="fs-5">Ringkasan Belanja</h3>
+            <p>Total Harga (11 barang)</p>
+            {currency(hargaTotal)}
+          </div>
+        </div>
       </div>
+
       {/* <>
       <div className="d-flex flex-row mb-3 mt-5">
         <input type="checkbox" className="p-2" name="cekToko" />
