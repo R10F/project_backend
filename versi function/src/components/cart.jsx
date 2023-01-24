@@ -217,7 +217,7 @@ export const Cart = () => {
                     <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
                       <input
                         type="checkbox"
-                        className="p-2"
+                        className="p-2 ms-3"
                         name="cekAll"
                         id="check-all"
                         onChange={checkAllHandler}
