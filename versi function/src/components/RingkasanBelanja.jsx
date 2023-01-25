@@ -6,7 +6,7 @@ export const RingkasanBelanja = (props) => {
   let totalQty = 0;
   let hargaTotal = 0;
   let hargaDiskon = 0;
-  Object.values(ringkasanBelanja).forEach(item => {console.log(item)
+  Object.values(ringkasanBelanja).forEach(item => {
     if (item.isChecked) {
       totalQty += item.qty;
       hargaTotal += item.harga * item.qty;
@@ -28,12 +28,11 @@ export const RingkasanBelanja = (props) => {
         <span>{currency(hargaDiskon)}</span>
       </p>
 
-      <p className="d-flex justify-content-between mb-0">
+      <p className="d-flex justify-content-between mb-4">
         <span>Total Harga</span>
         <span>{currency(hargaTotal - hargaDiskon)}</span>
       </p>
 
-      <br />
       <button
         type="button"
         className="btn btn-success"

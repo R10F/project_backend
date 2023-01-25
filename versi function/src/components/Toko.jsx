@@ -2,12 +2,6 @@ import { Produk } from "./Produk";
 
 export const Toko = (props) => {
   const toko = props.toko;
-  const stateReRender = props.stateReRender;
-  const stateRingkasanBelanja = props.stateRingkasanBelanja;
-  const stateHargaTotal = props.stateHargaTotal;
-  const stateHargaDiskon = props.stateHargaDiskon;
-  const checkTokoHandler = props.checkTokoHandler;
-  const checkProdukHandler = props.checkProdukHandler;
 
   return (
     <>
@@ -19,11 +13,11 @@ export const Toko = (props) => {
             defaultChecked={toko.check}
             data-for="toko"
             data-id={toko._id}
-            onChange={checkTokoHandler}
+            onChange={props.checkTokoHandler}
           />
-          <div className="m-0">
+          <div>
             <b>{toko.nama}</b>
-            <p className="m-0">{toko.kota}</p>
+            <p className="mb-0">{toko.kota}</p>
           </div>
         </div>
 
@@ -34,11 +28,9 @@ export const Toko = (props) => {
                 key={produk._id}
                 idToko={toko._id}
                 produk={produk}
-                stateRingkasanBelanja={stateRingkasanBelanja}
-                // stateHargaTotal={stateHargaTotal}
-                // stateHargaDiskon={stateHargaDiskon}
-                stateReRender={stateReRender}
-                checkProdukHandler={checkProdukHandler}
+                stateRingkasanBelanja={props.stateRingkasanBelanja}
+                stateReRender={props.stateReRender}
+                checkProdukHandler={props.checkProdukHandler}
               />
             );
           })}

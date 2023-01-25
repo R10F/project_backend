@@ -21,7 +21,7 @@ export const Produk = (props) => {
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
     setQty(newQty);
-    updateQtyHandler(newQty, count);
+    updateQtyHandler(newQty);
     updateRingkasanBelanja();
   };
 
@@ -30,21 +30,15 @@ export const Produk = (props) => {
     if (newQty < 1 || newQty > 7) return;
     if (newQty === "") newQty = 1;
     setQty(newQty);
-    updateQtyHandler(newQty, newQty - qty);
+    updateQtyHandler(newQty);
     updateRingkasanBelanja();
   };
 
-  const updateQtyHandler = (newQty, delta) => {
+  const updateQtyHandler = (newQty) => {
     fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
-    }).then(() => {
-      // setTotalQty(totalQty + delta);
-      // setHargaTotal(hargaTotal + delta * produk.harga);
-      // setHargaDiskon(
-      //   hargaDiskon + (delta * produk.harga * produk.diskon) / 100
-      // );
     });
   };
 
@@ -95,7 +89,6 @@ export const Produk = (props) => {
     ringkasanBelanja[produk._id].isChecked = isChecked;
     setRingkasanBelanja(ringkasanBelanja);
     setReRender(reRender + 1);
-    console.log(ringkasanBelanja[produk._id], ringkasanBelanja)
   }
 
   const deleteProdukHanlder = async () => {
