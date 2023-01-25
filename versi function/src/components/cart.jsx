@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
+import { Swal } from "sweetalert2";
 
 export const Cart = () => {
   const [toko, setToko] = useState([]);
@@ -27,15 +28,16 @@ export const Cart = () => {
         data.forEach((toko) => {
           toko.produk.forEach((item) => {
             tempRingkasanBelanja[item._id] = {
-              qty: item.qty,
-              harga: item.harga,
-              diskon: item.diskon,
-              isChecked: item.check
-            }
+              qty: Number(item.qty),
+              harga: Number(item.harga),
+              diskon: Number(item.diskon),
+              isChecked: Number(item.check),
+            };
           });
         });
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
+        console.log(tempRingkasanBelanja);
         // hargaTotal: item.harga * item.qty,
         // hargaDiskon: (item.harga * item.qty * item.diskon) / 100;
         // setHargaTotal(tempHargaTotal);
@@ -206,7 +208,7 @@ export const Cart = () => {
       body: JSON.stringify({
         check: e.target.checked,
       }),
-    }).then(() => { });
+    }).then(() => {});
 
     checkAllSyncHandler();
   };
@@ -282,7 +284,10 @@ export const Cart = () => {
                           toko={t}
                           checkTokoHandler={checkTokoHandler}
                           checkProdukHandler={checkProdukHandler}
-                          stateRingkasanBelanja={[ringkasanBelanja, setRingkasanBelanja]}
+                          stateRingkasanBelanja={[
+                            ringkasanBelanja,
+                            setRingkasanBelanja,
+                          ]}
                           // stateHargaTotal={[hargaTotal, setHargaTotal]}
                           // stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
                           stateReRender={[reRender, setReRender]}

@@ -8,10 +8,10 @@ export const Produk = (props) => {
   const [reRender, setReRender] = props.stateReRender;
   const [ringkasanBelanja, setRingkasanBelanja] = props.stateRingkasanBelanja;
   const checkProdukHandler = props.checkProdukHandler;
-  
+
   const minQty = 1;
   const maxQty = 7;
-  
+
   const [qty, setQty] = useState(produk.qty);
   const [isChecked, setIsChecked] = useState(produk.check);
   const [isInput, setIsInput] = useState(false);
@@ -49,11 +49,6 @@ export const Produk = (props) => {
   };
 
   const handleButtonClick = () => {
-    if (inputValue === "") {
-      setButtonText("Ubah");
-    } else {
-      setButtonText("Tulis Catatan");
-    }
     setIsInput(true);
   };
 
@@ -79,27 +74,29 @@ export const Produk = (props) => {
         .then((resp) => {
           resp.json();
         })
-        .then((data) => { });
+        .then((data) => {});
     }
     console.log(produk.note);
   };
 
   const localCheckProdukHandler = (e) => {
-    setIsChecked(e.target.checked)
+    setIsChecked(e.target.checked);
     updateRingkasanBelanja();
     checkProdukHandler(e);
-  }
-  
+  };
+
   const updateRingkasanBelanja = () => {
     ringkasanBelanja[produk._id].qty = qty;
     ringkasanBelanja[produk._id].isChecked = isChecked;
     setRingkasanBelanja(ringkasanBelanja);
     setReRender(reRender + 1);
-    console.log(ringkasanBelanja[produk._id], ringkasanBelanja)
-  }
+    console.log(ringkasanBelanja[produk._id], ringkasanBelanja);
+  };
 
   const deleteProdukHanlder = async () => {
-    const productContainer = document.querySelector(`#toko-${idToko} .product-container`);
+    const productContainer = document.querySelector(
+      `#toko-${idToko} .product-container`
+    );
     const idsToko = productContainer.childElementCount === 1 ? [idToko] : [];
     const idsProduk = [produk._id];
 
@@ -160,14 +157,21 @@ export const Produk = (props) => {
                   placeholder="Pastikan Tidak Mengandung data pribadi"
                   id="note"
                   onKeyDown={addNote}
-                  onChange={handleInputChange}
+                  onInput={handleInputChange}
                   maxLength="144"
-                ></textarea>
+                  autoFocus
+                >
+                  {inputValue === "" ? produk.note : inputValue}
+                </textarea>
               ) : (
                 <div className="d-flex flex-row mb-3">
                   <div className="p-2">
                     <p className="m-0 noteProduk">
-                      {produk.note || inputValue}
+                      {inputValue === ""
+                        ? produk.note
+                        : produk.note === ""
+                        ? inputValue
+                        : ""}
                     </p>
                   </div>
                   <div className="p-2">
@@ -176,7 +180,11 @@ export const Produk = (props) => {
                       className="btn btn-link text-decoration-none text-success p-0 text-start"
                       onClick={handleButtonClick}
                     >
-                      {buttonText}
+                      {inputValue
+                        ? "Ubah"
+                        : produk.note
+                        ? "Ubah"
+                        : "Tulis Catatan"}
                     </button>
                   </div>
                 </div>
