@@ -2,14 +2,12 @@ import { useState, useEffect } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
-import { Swal } from "sweetalert2";
 
 export const Cart = () => {
   const [toko, setToko] = useState([]);
   const [reRender, setReRender] = useState(0);
-  const [ringkasanBelanja, setRingkasanBelanja] = useState([]);
-  // const [hargaTotal, setHargaTotal] = useState(0);
-  // const [hargaDiskon, setHargaDiskon] = useState(0);
+  const [ringkasanBelanja, setRingkasanBelanja] = useState({});
+  const checkboxList = document.getElementsByClassName("checkbox");
 
   const generateProduk = () => {
     fetch("http://localhost:8080/generate-sample-produk")
@@ -28,27 +26,20 @@ export const Cart = () => {
         data.forEach((toko) => {
           toko.produk.forEach((item) => {
             tempRingkasanBelanja[item._id] = {
-              qty: Number(item.qty),
-              harga: Number(item.harga),
-              diskon: Number(item.diskon),
-              isChecked: Number(item.check),
+              qty: item.qty,
+              harga: item.harga,
+              diskon: item.diskon,
+              isChecked: item.check,
             };
           });
         });
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
-        console.log(tempRingkasanBelanja);
-        // hargaTotal: item.harga * item.qty,
-        // hargaDiskon: (item.harga * item.qty * item.diskon) / 100;
-        // setHargaTotal(tempHargaTotal);
-        // setHargaDiskon(tempHargaDiskon);
         checkAllSyncHandler();
       });
   }, [reRender]);
 
   const checkAllHandler = async (e) => {
-    const checkboxList = document.getElementsByClassName("checkbox");
-
     let idsToko = [];
 
     Array.from(checkboxList).forEach((element) => {
@@ -83,21 +74,6 @@ export const Cart = () => {
   };
 
   const checkAllSyncHandler = () => {
-    const checkboxList = document.getElementsByClassName("checkbox");
-    let tempTotalQty = 0;
-    let tempHargaTotal = 0;
-    let tempHargaDiskon = 0;
-
-    toko.forEach((produk) => {
-      produk.produk.forEach((item) => {
-        tempTotalQty += item.qty;
-        tempHargaTotal += item.harga * item.qty;
-        tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-        if (item.check) {
-        }
-      });
-    });
-
     let count = 0;
     Array.from(checkboxList).forEach((element) => {
       if (element.checked) count++;
@@ -106,14 +82,8 @@ export const Cart = () => {
     const checkAll = document.getElementById("check-all");
     if (count === checkboxList.length) {
       checkAll.checked = true;
-      // setTotalQty(tempTotalQty);
-      // setHargaTotal(tempHargaTotal);
-      // setHargaDiskon(tempHargaDiskon);
     } else {
       checkAll.checked = false;
-      // setTotalQty(0);
-      // setHargaTotal(0);
-      // setHargaDiskon(0);
     }
   };
 
@@ -139,20 +109,11 @@ export const Cart = () => {
           }
         });
       });
-      // setTotalQty(tempTotalQty);
-      // setHargaTotal(tempHargaTotal);
-      // setHargaDiskon(tempHargaDiskon);
 
       if (e.target.checked) {
         input.checked = true;
-        // setTotalQty(tempTotalQty);
-        // setHargaTotal(tempHargaTotal);
-        // setHargaDiskon(tempHargaDiskon);
       } else {
         input.checked = false;
-        // setTotalQty(0);
-        // setHargaTotal(0);
-        // setHargaDiskon(0);
       }
     });
 
@@ -239,75 +200,64 @@ export const Cart = () => {
   };
 
   return (
-    <main>
-      <article className="container h-100 py-5">
-        <div className="row d-flex justify-content-center align-items-center h-100 p-2">
-          <h3 className="fw-normal mb-4 text-black">Shopping Cart</h3>
+    <main className="container mb-5 py-5">
+      <h3 className="fw-normal mb-4 text-black">Shopping Cart</h3>
 
-          {toko !== undefined &&
-            (toko.length === 0 ? (
-              <div className="alert alert-warning">
-                Oops, shopping cart is empty! &nbsp;
+      {toko !== undefined &&
+        (toko.length === 0 ? (
+          <div className="alert alert-warning">
+            Oops, shopping cart is empty!
+            <button
+              className="btn btn-success fw-bold"
+              onClick={generateProduk}
+            >
+              Add something to your cart !
+            </button>
+          </div>
+        ) : (
+          <div className="row">
+            <div className="col-md-8">
+              <div className="d-flex mb-3 align-items-center p-3 pe-2 shadow-sm">
+                <input
+                  type="checkbox"
+                  className="p-2"
+                  id="check-all"
+                  onChange={checkAllHandler}
+                />
+                <h3 className="fs-6 p-2 mb-0">Pilih Semua</h3>
+
                 <button
-                  className="btn btn-success"
-                  style={{ fontWeight: 500 }}
-                  onClick={generateProduk}
+                  className="d-flex align-items-center btn btn-link text-decoration-none p-2 ms-auto"
+                  onClick={deleteCheckedHandler}
                 >
-                  Add something to your cart !
+                  <FiTrash2 />
+                  <span className="ms-1">Hapus</span>
                 </button>
               </div>
-            ) : (
-              <div className="row">
-                <div className="col-md-8">
-                  <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
-                    <input
-                      type="checkbox"
-                      className="p-2 ms-3"
-                      id="check-all"
-                      onChange={checkAllHandler}
+
+              <div className="toko mt-3">
+                {toko.map((t) => {
+                  return (
+                    <Toko
+                      key={t._id}
+                      toko={t}
+                      checkTokoHandler={checkTokoHandler}
+                      checkProdukHandler={checkProdukHandler}
+                      stateRingkasanBelanja={[
+                        ringkasanBelanja,
+                        setRingkasanBelanja,
+                      ]}
+                      stateReRender={[reRender, setReRender]}
                     />
-                    <h3 className="fs-6 p-2 m-0">Pilih Semua</h3>
-
-                    <button
-                      className="delete-all btn btn-link p-2 ms-auto me-2"
-                      onClick={deleteCheckedHandler}
-                    >
-                      <FiTrash2 /> <span>Hapus</span>
-                    </button>
-                  </div>
-
-                  <div className="toko mt-3 w-100 p-0">
-                    {toko.map((t) => {
-                      return (
-                        <Toko
-                          key={t._id}
-                          toko={t}
-                          checkTokoHandler={checkTokoHandler}
-                          checkProdukHandler={checkProdukHandler}
-                          stateRingkasanBelanja={[
-                            ringkasanBelanja,
-                            setRingkasanBelanja,
-                          ]}
-                          // stateHargaTotal={[hargaTotal, setHargaTotal]}
-                          // stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
-                          stateReRender={[reRender, setReRender]}
-                        />
-                      );
-                    })}
-                  </div>
-                </div>
-                <div className="col-md-4">
-                  <RingkasanBelanja
-                    // totalQty={totalQty}
-                    // hargaTotal={hargaTotal}
-                    // hargaDiskon={hargaDiskon}
-                    ringkasanBelanja={ringkasanBelanja}
-                  />
-                </div>
+                  );
+                })}
               </div>
-            ))}
-        </div>
-      </article>
+            </div>
+            <div className="col-md-4">
+              <RingkasanBelanja ringkasanBelanja={ringkasanBelanja} />
+            </div>
+          </div>
+        ))}
     </main>
   );
 };

@@ -1,5 +1,4 @@
 import { currency } from "../utils/utils";
-import Swal from "sweetalert2";
 
 export const RingkasanBelanja = (props) => {
   const ringkasanBelanja = props.ringkasanBelanja;
@@ -8,12 +7,10 @@ export const RingkasanBelanja = (props) => {
   let hargaTotal = 0;
   let hargaDiskon = 0;
   Object.values(ringkasanBelanja).forEach((item) => {
-    console.log(item);
     if (item.isChecked) {
-      totalQty += Number(item.qty);
-      hargaTotal += Number(item.harga) * Number(item.qty);
-      hargaDiskon +=
-        (Number(item.harga) * Number(item.qty) * Number(item.diskon)) / 100;
+      totalQty += item.qty;
+      hargaTotal += item.harga * item.qty;
+      hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
     }
   });
 
@@ -31,12 +28,11 @@ export const RingkasanBelanja = (props) => {
         <span>{currency(hargaDiskon)}</span>
       </p>
 
-      <p className="d-flex justify-content-between mb-0">
+      <p className="d-flex justify-content-between mb-4">
         <span>Total Harga</span>
         <span>{currency(hargaTotal - hargaDiskon)}</span>
       </p>
 
-      <br />
       <button
         type="button"
         className="btn btn-success"
