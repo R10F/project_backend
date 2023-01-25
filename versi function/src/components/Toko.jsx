@@ -15,7 +15,7 @@ export const Toko = (props) => {
         <div className="d-flex w-100 align-items-center p-3">
           <input
             type="checkbox"
-            className="checkbox me-3 mb-2"
+            className="checkbox me-3 mb-2 cekToko"
             defaultChecked={toko.check}
             data-for="toko"
             data-id={toko._id}

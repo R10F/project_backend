@@ -23,28 +23,29 @@ export const Cart = () => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
-        let tempTotalQty = 0;
-        let tempHargaTotal = 0;
-        let tempHargaDiskon = 0;
-        data.forEach((toko) => {
-          toko.produk.forEach((item) => {
-            tempTotalQty += item.qty;
-            tempHargaTotal += item.harga * item.qty;
-            tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-            if (item.check) {
-            }
-          });
-        });
+        // let tempTotalQty = 0;
+        // let tempHargaTotal = 0;
+        // let tempHargaDiskon = 0;
+        // data.forEach((toko) => {
+        //   toko.produk.forEach((item) => {
+        //     tempTotalQty += item.qty;
+        //     tempHargaTotal += item.harga * item.qty;
+        //     tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+        //     if (item.check) {
+        //     }
+        //   });
+        // });
         setToko(data);
-        setTotalQty(tempTotalQty);
-        setHargaTotal(tempHargaTotal);
-        setHargaDiskon(tempHargaDiskon);
+        // setTotalQty(tempTotalQty);
+        // setHargaTotal(tempHargaTotal);
+        // setHargaDiskon(tempHargaDiskon);
         if (toko.length > 0) checkAllSyncHandler();
       });
   }, [reRender]);
 
   const checkAllHandler = async (e) => {
     const checkboxList = document.getElementsByClassName("checkbox");
+
     let idsToko = [];
 
     Array.from(checkboxList).forEach((element) => {
@@ -80,6 +81,19 @@ export const Cart = () => {
 
   const checkAllSyncHandler = () => {
     const checkboxList = document.getElementsByClassName("checkbox");
+    let tempTotalQty = 0;
+    let tempHargaTotal = 0;
+    let tempHargaDiskon = 0;
+
+    toko.forEach((produk) => {
+      produk.produk.forEach((item) => {
+        tempTotalQty += item.qty;
+        tempHargaTotal += item.harga * item.qty;
+        tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+        if (item.check) {
+        }
+      });
+    });
 
     let count = 0;
     Array.from(checkboxList).forEach((element) => {
@@ -89,8 +103,14 @@ export const Cart = () => {
     const checkAll = document.getElementById("check-all");
     if (count === checkboxList.length) {
       checkAll.checked = true;
+      setTotalQty(tempTotalQty);
+      setHargaTotal(tempHargaTotal);
+      setHargaDiskon(tempHargaDiskon);
     } else {
       checkAll.checked = false;
+      setTotalQty(0);
+      setHargaTotal(0);
+      setHargaDiskon(0);
     }
   };
 
@@ -100,11 +120,36 @@ export const Cart = () => {
 
     Array.from(productContainer.children).forEach((element) => {
       const input = element.getElementsByTagName("input")[0];
+      let idProduk = input.dataset.id;
+
+      let tempTotalQty = 0;
+      let tempHargaTotal = 0;
+      let tempHargaDiskon = 0;
+
+      toko.forEach((shop) => {
+        shop.produk.forEach((item) => {
+          if (item._id === idProduk) {
+            // console.log(item);
+            tempTotalQty += item.qty;
+            tempHargaTotal += item.harga * item.qty;
+            tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+          }
+        });
+      });
+      setTotalQty(tempTotalQty);
+      setHargaTotal(tempHargaTotal);
+      setHargaDiskon(tempHargaDiskon);
 
       if (e.target.checked) {
         input.checked = true;
+        // setTotalQty(tempTotalQty);
+        // setHargaTotal(tempHargaTotal);
+        // setHargaDiskon(tempHargaDiskon);
       } else {
         input.checked = false;
+        setTotalQty(0);
+        setHargaTotal(0);
+        setHargaDiskon(0);
       }
     });
 

@@ -10,7 +10,7 @@ export const Layout = () => {
               <img
                 src="https://ecs7.tokopedia.net/assets-tokopedia-lite/v2/zeus/production/e5b8438b.svg"
                 width="200px"
-                alt="LaptopU Logo"
+                alt="Logo"
               />
             </a>
             <button
@@ -55,7 +55,7 @@ export const Layout = () => {
       </header>
 
       <Cart />
-      
+
       <footer className="py-4 bg-dark mt-auto fixed-bottom">
         <div className="container-fluid px-4">
           <div className="d-flex align-items-center justify-content-center small">

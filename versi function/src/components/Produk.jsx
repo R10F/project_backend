@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { currency } from "../utils/utils";
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
+import { useEffect } from "react";
 
 export const Produk = (props) => {
   const produk = props.produk;
@@ -8,6 +9,8 @@ export const Produk = (props) => {
   const [hargaTotal, setHargaTotal] = props.stateHargaTotal;
   const [hargaDiskon, setHargaDiskon] = props.stateHargaDiskon;
   const checkProdukHandler = props.checkProdukHandler;
+
+  const [reRender, setReRender] = useState(0);
 
   const minQty = 1;
   const maxQty = 7;
@@ -81,6 +84,12 @@ export const Produk = (props) => {
     console.log(produk.note);
   };
 
+  const deleteProdukByid = async () => {
+    fetch(`http://localhost:8080/deleteProductId/${produk._id}`, {
+      method: "DELETE",
+    }).then((resp) => {});
+  };
+
   return (
     <>
       <div className="d-flex flex-row card rounded-3 mb-2 p-3">
@@ -131,13 +140,16 @@ export const Produk = (props) => {
                   id="note"
                   onKeyDown={addNote}
                   onChange={handleInputChange}
+                  maxLength="144"
                 ></textarea>
               ) : (
-                <div class="d-flex flex-row mb-3">
-                  <div class="p-2">
-                    <p className="m-0">{produk.note || inputValue}</p>
+                <div className="d-flex flex-row mb-3">
+                  <div className="p-2">
+                    <p className="m-0 noteProduk">
+                      {produk.note || inputValue}
+                    </p>
                   </div>
-                  <div class="p-2">
+                  <div className="p-2">
                     <button
                       type="button"
                       className="btn btn-link text-decoration-none text-success p-0 text-start"
@@ -152,9 +164,9 @@ export const Produk = (props) => {
 
             <div className="qty-wrapper d-flex align-items-center p-2">
               {/* button trash */}
-              {/* <button className="btn btn-link">
+              <button className="btn btn-link" onClick={deleteProdukByid}>
                 <FiTrash2 />
-              </button> */}
+              </button>
               <button
                 className="btn btn-link px-2"
                 disabled={qty <= minQty ? true : false}

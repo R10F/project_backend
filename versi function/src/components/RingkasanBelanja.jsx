@@ -1,9 +1,9 @@
 import { currency } from "../utils/utils";
 
 export const RingkasanBelanja = (props) => {
-  const totalQty =  props.totalQty;
-  const hargaTotal =  props.hargaTotal;
-  const hargaDiskon =  props.hargaDiskon;
+  const totalQty = props.totalQty;
+  const hargaTotal = props.hargaTotal;
+  const hargaDiskon = props.hargaDiskon;
 
   return (
     <div className="card p-3">
@@ -23,6 +23,15 @@ export const RingkasanBelanja = (props) => {
         <span>Total Harga</span>
         <span>{currency(hargaTotal - hargaDiskon)}</span>
       </p>
+
+      <br />
+      <button
+        type="button"
+        className="btn btn-success"
+        disabled={totalQty === 0}
+      >
+        Beli ({totalQty})
+      </button>
     </div>
   );
-}
+};

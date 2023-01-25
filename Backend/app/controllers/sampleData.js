@@ -18,7 +18,7 @@ exports.deleteProduk = async (req, res) => {
   try {
     await Toko.deleteMany({ _id: { $in: req.body.idsToko || [] } });
     await Produk.deleteMany({ _id: { $in: req.body.idsProduk } });
-    
+
     res.status(200).send();
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -48,4 +48,14 @@ exports.generateProduk = async (req, res) => {
       res.status(200).json({ message: "Data Tidak Kosong" });
     }
   });
+};
+
+exports.deleteProdukbyId = async (req, res) => {
+  const id = req.params.id;
+  try {
+    let result = await Produk.findByIdAndDelete(id);
+    res.status(200).send({ message: "Product Deleted" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 };

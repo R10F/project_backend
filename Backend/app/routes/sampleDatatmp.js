@@ -10,4 +10,6 @@ module.exports = (router) => {
   router.delete("/hapus-produk", controllersData.deleteProduk);
 
   router.get("/generate-sample-produk", controllersData.generateProduk);
+
+  router.delete("/deleteProductId/:id", controllersData.deleteProdukbyId);
 };
