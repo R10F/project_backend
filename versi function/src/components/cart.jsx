@@ -205,7 +205,7 @@ export const Cart = () => {
       body: JSON.stringify({
         check: e.target.checked,
       }),
-    }).then(() => {});
+    }).then(() => { });
 
     checkAllSyncHandler();
   };
@@ -239,70 +239,66 @@ export const Cart = () => {
     <main>
       <article className="container h-100 py-5">
         <div className="row d-flex justify-content-center align-items-center h-100 p-2">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h3 className="fw-normal mb-0 text-black">Shopping Cart</h3>
-          </div>
+          <h3 className="fw-normal mb-4 text-black">Shopping Cart</h3>
 
-          <div className="row">
-            <div className="col-md-8">
-              {toko !== undefined &&
-                (toko.length === 0 ? (
-                  <div className="alert alert-warning">
-                    Oops, shopping cart is empty! &nbsp;
+          {toko !== undefined &&
+            (toko.length === 0 ? (
+              <div className="alert alert-warning">
+                Oops, shopping cart is empty! &nbsp;
+                <button
+                  className="btn btn-success"
+                  style={{ fontWeight: 500 }}
+                  onClick={generateProduk}
+                >
+                  Add something to your cart !
+                </button>
+              </div>
+            ) : (
+              <div className="row">
+                <div className="col-md-8">
+                  <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
+                    <input
+                      type="checkbox"
+                      className="p-2 ms-3"
+                      id="check-all"
+                      onChange={checkAllHandler}
+                    />
+                    <h3 className="fs-6 p-2 m-0">Pilih Semua</h3>
+
                     <button
-                      className="btn btn-success"
-                      style={{ fontWeight: 500 }}
-                      onClick={generateProduk}
+                      className="delete-all btn btn-link p-2 ms-auto me-2"
+                      onClick={deleteCheckedHandler}
                     >
-                      Add something to your cart !
+                      <FiTrash2 /> <span>Hapus</span>
                     </button>
                   </div>
-                ) : (
-                  <>
-                    <div className="d-flex mb-3 align-items-center w-100 pb-3 pt-2 shadow-sm">
-                      <input
-                        type="checkbox"
-                        className="p-2 ms-3"
-                        name="cekAll"
-                        id="check-all"
-                        onChange={checkAllHandler}
-                      />
-                      <h3 className="fs-6 p-2 m-0">Pilih Semua</h3>
 
-                      <button
-                        className="delete-all btn btn-link p-2 ms-auto me-2"
-                        onClick={deleteCheckedHandler}
-                      >
-                        <FiTrash2 /> <span>Hapus</span>
-                      </button>
-                    </div>
-
-                    <div className="toko mt-3 w-100 p-0">
-                      {toko.map((t) => {
-                        return (
-                          <Toko
-                            key={t._id}
-                            toko={t}
-                            checkTokoHandler={checkTokoHandler}
-                            checkProdukHandler={checkProdukHandler}
-                            stateTotalQty={[totalQty, setTotalQty]}
-                            stateHargaTotal={[hargaTotal, setHargaTotal]}
-                            stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
-                          />
-                        );
-                      })}
-                    </div>
-                  </>
-                ))}
-            </div>
-            <div className="col-md-4">
-              <RingkasanBelanja
-                totalQty={totalQty}
-                hargaTotal={hargaTotal}
-                hargaDiskon={hargaDiskon}
-              />
-            </div>
-          </div>
+                  <div className="toko mt-3 w-100 p-0">
+                    {toko.map((t) => {
+                      return (
+                        <Toko
+                          key={t._id}
+                          toko={t}
+                          checkTokoHandler={checkTokoHandler}
+                          checkProdukHandler={checkProdukHandler}
+                          stateTotalQty={[totalQty, setTotalQty]}
+                          stateHargaTotal={[hargaTotal, setHargaTotal]}
+                          stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
+                          stateReRender={[reRender, setReRender]}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="col-md-4">
+                  <RingkasanBelanja
+                    totalQty={totalQty}
+                    hargaTotal={hargaTotal}
+                    hargaDiskon={hargaDiskon}
+                  />
+                </div>
+              </div>
+            ))}
         </div>
       </article>
     </main>

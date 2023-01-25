@@ -1,16 +1,15 @@
 import { useState } from "react";
 import { currency } from "../utils/utils";
 import { FiPlus, FiMinus, FiTrash2 } from "react-icons/fi";
-import { useEffect } from "react";
 
 export const Produk = (props) => {
   const produk = props.produk;
+  const idToko = props.idToko;
+  const [reRender, setReRender] = props.stateReRender;
   const [totalQty, setTotalQty] = props.stateTotalQty;
   const [hargaTotal, setHargaTotal] = props.stateHargaTotal;
   const [hargaDiskon, setHargaDiskon] = props.stateHargaDiskon;
   const checkProdukHandler = props.checkProdukHandler;
-
-  const [reRender, setReRender] = useState(0);
 
   const minQty = 1;
   const maxQty = 7;
@@ -79,15 +78,23 @@ export const Produk = (props) => {
         .then((resp) => {
           resp.json();
         })
-        .then((data) => {});
+        .then((data) => { });
     }
     console.log(produk.note);
   };
 
-  const deleteProdukByid = async () => {
-    fetch(`http://localhost:8080/deleteProductId/${produk._id}`, {
+  const deleteProdukHanlder = async () => {
+    const productContainer = document.querySelector(`#toko-${idToko} .product-container`);
+    const idsToko = productContainer.childElementCount === 1 ? [idToko] : [];
+    const idsProduk = [produk._id];
+
+    fetch("http://localhost:8080/hapus-produk", {
       method: "DELETE",
-    }).then((resp) => {});
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idsToko, idsProduk }),
+    }).then(() => {
+      setReRender(reRender + 1);
+    });
   };
 
   return (
@@ -131,7 +138,6 @@ export const Produk = (props) => {
           </div>
 
           <div className="d-flex align-items-center">
-            {/* <button className="btn text-danger fs-5" data-id={p._id} onClick={deleteProdukHanlder}><FiTrash2 /></button> */}
             <div className="product-note me-auto p-2">
               {isInput ? (
                 <textarea
@@ -163,10 +169,10 @@ export const Produk = (props) => {
             </div>
 
             <div className="qty-wrapper d-flex align-items-center p-2">
-              {/* button trash */}
-              <button className="btn btn-link" onClick={deleteProdukByid}>
+              <button className="btn btn-link" onClick={deleteProdukHanlder}>
                 <FiTrash2 />
               </button>
+
               <button
                 className="btn btn-link px-2"
                 disabled={qty <= minQty ? true : false}

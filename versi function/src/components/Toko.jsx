@@ -3,6 +3,7 @@ import { Produk } from "./Produk";
 
 export const Toko = (props) => {
   const toko = props.toko;
+  const stateReRender = props.stateReRender;
   const stateTotalQty = props.stateTotalQty;
   const stateHargaTotal = props.stateHargaTotal;
   const stateHargaDiskon = props.stateHargaDiskon;
@@ -11,7 +12,7 @@ export const Toko = (props) => {
 
   return (
     <>
-      <div className="card garis rounded-3 mb-4 shadow-sm">
+      <div className="card garis rounded-3 mb-4 shadow-sm" id={"toko-" + toko._id}>
         <div className="d-flex w-100 align-items-center p-3">
           <input
             type="checkbox"
@@ -32,11 +33,13 @@ export const Toko = (props) => {
             return (
               <Produk
                 key={produk._id}
+                idToko={toko._id}
                 produk={produk}
                 currency={currency}
                 stateTotalQty={stateTotalQty}
                 stateHargaTotal={stateHargaTotal}
                 stateHargaDiskon={stateHargaDiskon}
+                stateReRender={stateReRender}
                 checkProdukHandler={checkProdukHandler}
               />
             );
