@@ -16,6 +16,7 @@ export const Produk = (props) => {
   const [isChecked, setIsChecked] = useState(produk.check);
   const [isInput, setIsInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [buttonText, setButtonText] = useState("Tulis Catatan");
 
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
@@ -42,12 +43,17 @@ export const Produk = (props) => {
   };
 
   const handleButtonClick = () => {
+    if (inputValue === "") {
+      setButtonText("Ubah");
+    } else {
+      setButtonText("Tulis Catatan");
+    }
     setIsInput(true);
   };
 
   const handleInputChange = () => {
     setInputValue(inputValue);
-    // setButtonText("Ubah");
+    setButtonText("Ubah");
   };
 
   const addNote = (e) => {
@@ -151,19 +157,12 @@ export const Produk = (props) => {
                   onKeyDown={addNote}
                   onChange={handleInputChange}
                   maxLength="144"
-                  autoFocus
-                >
-                  {inputValue === "" ? produk.note : inputValue}
-                </textarea>
+                ></textarea>
               ) : (
                 <div className="d-flex flex-row mb-3">
                   <div className="p-2">
                     <p className="m-0 noteProduk">
-                      {inputValue === ""
-                        ? produk.note
-                        : produk.note === ""
-                        ? produk.note
-                        : inputValue}
+                      {produk.note || inputValue}
                     </p>
                   </div>
                   <div className="p-2">
@@ -172,11 +171,7 @@ export const Produk = (props) => {
                       className="btn btn-link text-decoration-none text-success p-0 text-start"
                       onClick={handleButtonClick}
                     >
-                      {inputValue
-                        ? "Ubah"
-                        : produk.note
-                        ? "Ubah"
-                        : "Tulis Catatan"}
+                      {buttonText}
                     </button>
                   </div>
                 </div>
