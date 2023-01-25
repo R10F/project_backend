@@ -1,10 +1,19 @@
 import { currency } from "../utils/utils";
 
 export const RingkasanBelanja = (props) => {
-  const totalQty = props.totalQty;
-  const hargaTotal = props.hargaTotal;
-  const hargaDiskon = props.hargaDiskon;
+  const ringkasanBelanja = props.ringkasanBelanja;
 
+  let totalQty = 0;
+  let hargaTotal = 0;
+  let hargaDiskon = 0;
+  Object.values(ringkasanBelanja).forEach(item => {console.log(item)
+    if (item.isChecked) {
+      totalQty += item.qty;
+      hargaTotal += item.harga * item.qty;
+      hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+    }
+  });
+  
   return (
     <div className="card p-3">
       <h3 className="fs-5">Ringkasan Belanja</h3>

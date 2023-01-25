@@ -6,15 +6,14 @@ export const Produk = (props) => {
   const produk = props.produk;
   const idToko = props.idToko;
   const [reRender, setReRender] = props.stateReRender;
-  const [totalQty, setTotalQty] = props.stateTotalQty;
-  const [hargaTotal, setHargaTotal] = props.stateHargaTotal;
-  const [hargaDiskon, setHargaDiskon] = props.stateHargaDiskon;
+  const [ringkasanBelanja, setRingkasanBelanja] = props.stateRingkasanBelanja;
   const checkProdukHandler = props.checkProdukHandler;
-
+  
   const minQty = 1;
   const maxQty = 7;
-
+  
   const [qty, setQty] = useState(produk.qty);
+  const [isChecked, setIsChecked] = useState(produk.check);
   const [isInput, setIsInput] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [buttonText, setButtonText] = useState("Tulis Catatan");
@@ -23,6 +22,7 @@ export const Produk = (props) => {
     const newQty = qty + count;
     setQty(newQty);
     updateQtyHandler(newQty, count);
+    updateRingkasanBelanja();
   };
 
   const inputHandler = (e) => {
@@ -31,6 +31,7 @@ export const Produk = (props) => {
     if (newQty === "") newQty = 1;
     setQty(newQty);
     updateQtyHandler(newQty, newQty - qty);
+    updateRingkasanBelanja();
   };
 
   const updateQtyHandler = (newQty, delta) => {
@@ -39,11 +40,11 @@ export const Produk = (props) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
     }).then(() => {
-      setTotalQty(totalQty + delta);
-      setHargaTotal(hargaTotal + delta * produk.harga);
-      setHargaDiskon(
-        hargaDiskon + (delta * produk.harga * produk.diskon) / 100
-      );
+      // setTotalQty(totalQty + delta);
+      // setHargaTotal(hargaTotal + delta * produk.harga);
+      // setHargaDiskon(
+      //   hargaDiskon + (delta * produk.harga * produk.diskon) / 100
+      // );
     });
   };
 
@@ -83,6 +84,20 @@ export const Produk = (props) => {
     console.log(produk.note);
   };
 
+  const localCheckProdukHandler = (e) => {
+    setIsChecked(e.target.checked)
+    updateRingkasanBelanja();
+    checkProdukHandler(e);
+  }
+  
+  const updateRingkasanBelanja = () => {
+    ringkasanBelanja[produk._id].qty = qty;
+    ringkasanBelanja[produk._id].isChecked = isChecked;
+    setRingkasanBelanja(ringkasanBelanja);
+    setReRender(reRender + 1);
+    console.log(ringkasanBelanja[produk._id], ringkasanBelanja)
+  }
+
   const deleteProdukHanlder = async () => {
     const productContainer = document.querySelector(`#toko-${idToko} .product-container`);
     const idsToko = productContainer.childElementCount === 1 ? [idToko] : [];
@@ -106,7 +121,7 @@ export const Produk = (props) => {
           defaultChecked={produk.check}
           data-for="produk"
           data-id={produk._id}
-          onChange={checkProdukHandler}
+          onChange={localCheckProdukHandler}
         />
 
         <div className="d-flex flex-column flex-fill">

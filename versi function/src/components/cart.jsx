@@ -6,9 +6,9 @@ import { RingkasanBelanja } from "./RingkasanBelanja";
 export const Cart = () => {
   const [toko, setToko] = useState([]);
   const [reRender, setReRender] = useState(0);
-  const [totalQty, setTotalQty] = useState(0);
-  const [hargaTotal, setHargaTotal] = useState(0);
-  const [hargaDiskon, setHargaDiskon] = useState(0);
+  const [ringkasanBelanja, setRingkasanBelanja] = useState([]);
+  // const [hargaTotal, setHargaTotal] = useState(0);
+  // const [hargaDiskon, setHargaDiskon] = useState(0);
 
   const generateProduk = () => {
     fetch("http://localhost:8080/generate-sample-produk")
@@ -23,23 +23,24 @@ export const Cart = () => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
-        // let tempTotalQty = 0;
-        // let tempHargaTotal = 0;
-        // let tempHargaDiskon = 0;
-        // data.forEach((toko) => {
-        //   toko.produk.forEach((item) => {
-        //     tempTotalQty += item.qty;
-        //     tempHargaTotal += item.harga * item.qty;
-        //     tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-        //     if (item.check) {
-        //     }
-        //   });
-        // });
+        let tempRingkasanBelanja = {};
+        data.forEach((toko) => {
+          toko.produk.forEach((item) => {
+            tempRingkasanBelanja[item._id] = {
+              qty: item.qty,
+              harga: item.harga,
+              diskon: item.diskon,
+              isChecked: item.check
+            }
+          });
+        });
         setToko(data);
-        // setTotalQty(tempTotalQty);
+        setRingkasanBelanja(tempRingkasanBelanja);
+        // hargaTotal: item.harga * item.qty,
+        // hargaDiskon: (item.harga * item.qty * item.diskon) / 100;
         // setHargaTotal(tempHargaTotal);
         // setHargaDiskon(tempHargaDiskon);
-        if (toko.length > 0) checkAllSyncHandler();
+        checkAllSyncHandler();
       });
   }, [reRender]);
 
@@ -103,14 +104,14 @@ export const Cart = () => {
     const checkAll = document.getElementById("check-all");
     if (count === checkboxList.length) {
       checkAll.checked = true;
-      setTotalQty(tempTotalQty);
-      setHargaTotal(tempHargaTotal);
-      setHargaDiskon(tempHargaDiskon);
+      // setTotalQty(tempTotalQty);
+      // setHargaTotal(tempHargaTotal);
+      // setHargaDiskon(tempHargaDiskon);
     } else {
       checkAll.checked = false;
-      setTotalQty(0);
-      setHargaTotal(0);
-      setHargaDiskon(0);
+      // setTotalQty(0);
+      // setHargaTotal(0);
+      // setHargaDiskon(0);
     }
   };
 
@@ -136,9 +137,9 @@ export const Cart = () => {
           }
         });
       });
-      setTotalQty(tempTotalQty);
-      setHargaTotal(tempHargaTotal);
-      setHargaDiskon(tempHargaDiskon);
+      // setTotalQty(tempTotalQty);
+      // setHargaTotal(tempHargaTotal);
+      // setHargaDiskon(tempHargaDiskon);
 
       if (e.target.checked) {
         input.checked = true;
@@ -147,9 +148,9 @@ export const Cart = () => {
         // setHargaDiskon(tempHargaDiskon);
       } else {
         input.checked = false;
-        setTotalQty(0);
-        setHargaTotal(0);
-        setHargaDiskon(0);
+        // setTotalQty(0);
+        // setHargaTotal(0);
+        // setHargaDiskon(0);
       }
     });
 
@@ -281,9 +282,9 @@ export const Cart = () => {
                           toko={t}
                           checkTokoHandler={checkTokoHandler}
                           checkProdukHandler={checkProdukHandler}
-                          stateTotalQty={[totalQty, setTotalQty]}
-                          stateHargaTotal={[hargaTotal, setHargaTotal]}
-                          stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
+                          stateRingkasanBelanja={[ringkasanBelanja, setRingkasanBelanja]}
+                          // stateHargaTotal={[hargaTotal, setHargaTotal]}
+                          // stateHargaDiskon={[hargaDiskon, setHargaDiskon]}
                           stateReRender={[reRender, setReRender]}
                         />
                       );
@@ -292,9 +293,10 @@ export const Cart = () => {
                 </div>
                 <div className="col-md-4">
                   <RingkasanBelanja
-                    totalQty={totalQty}
-                    hargaTotal={hargaTotal}
-                    hargaDiskon={hargaDiskon}
+                    // totalQty={totalQty}
+                    // hargaTotal={hargaTotal}
+                    // hargaDiskon={hargaDiskon}
+                    ringkasanBelanja={ringkasanBelanja}
                   />
                 </div>
               </div>
