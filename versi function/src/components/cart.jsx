@@ -18,26 +18,39 @@ export const Cart = () => {
       });
   };
 
-  useEffect(() => {
+    useEffect(() => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
         let tempRingkasanBelanja = {};
+        let totalQty = 0;
+        let hargaTotal = 0;
+        let hargaDiskon = 0;
         data.forEach((toko) => {
           toko.produk.forEach((item) => {
-            tempRingkasanBelanja[item._id] = {
-              qty: item.qty,
-              harga: item.harga,
-              diskon: item.diskon,
-              isChecked: item.check,
-            };
+            if (item.check){
+              totalQty += item.qty;
+              hargaTotal += item.harga * item.qty;
+              hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+            }
           });
         });
+        tempRingkasanBelanja.totalQty = totalQty
+        tempRingkasanBelanja.hargaTotal = hargaTotal
+        tempRingkasanBelanja.hargaDiskon = hargaDiskon
+        // console.log(tempRingkasanBelanja);
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
-        checkAllSyncHandler();
       });
   }, [reRender]);
+
+  const updateRingkasanBelanja = (harga, diskon, increment) => {
+    let tempRingkasanBelanja = {}
+    tempRingkasanBelanja.totalQty = ringkasanBelanja.totalQty + increment;
+    tempRingkasanBelanja.hargaTotal = ringkasanBelanja.hargaTotal + harga;
+    tempRingkasanBelanja.hargaDiskon = ringkasanBelanja.hargaDiskon + diskon;
+    setRingkasanBelanja(tempRingkasanBelanja);
+  };
 
   const checkAllHandler = async (e) => {
     let idsToko = [];
@@ -73,7 +86,7 @@ export const Cart = () => {
       .catch((err) => console.log("error", err));
   };
 
-  const checkAllSyncHandler = () => {
+  const checkAllSyncHandler = async () => {
     let count = 0;
     Array.from(checkboxList).forEach((element) => {
       if (element.checked) count++;
@@ -88,35 +101,6 @@ export const Cart = () => {
   };
 
   const checkTokoHandler = (e) => {
-    const productContainer = e.target.parentNode.nextSibling;
-    //classname =  product-container
-
-    Array.from(productContainer.children).forEach((element) => {
-      const input = element.getElementsByTagName("input")[0];
-      let idProduk = input.dataset.id;
-
-      let tempTotalQty = 0;
-      let tempHargaTotal = 0;
-      let tempHargaDiskon = 0;
-
-      toko.forEach((shop) => {
-        shop.produk.forEach((item) => {
-          if (item._id === idProduk) {
-            // console.log(item);
-            tempTotalQty += item.qty;
-            tempHargaTotal += item.harga * item.qty;
-            tempHargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-          }
-        });
-      });
-
-      if (e.target.checked) {
-        input.checked = true;
-      } else {
-        input.checked = false;
-      }
-    });
-
     const idToko = e.target.dataset.id;
     fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
       method: "PUT",
@@ -125,8 +109,13 @@ export const Cart = () => {
         check: e.target.checked,
         toggleAll: true,
       }),
-    });
-
+    })
+    .then((res) => res.json())
+    .then((update) => {
+      updateRingkasanBelanja(update.harga, update.diskon, update.increment)
+      // console.log(update);
+    })
+    
     checkAllSyncHandler();
   };
 
@@ -169,7 +158,11 @@ export const Cart = () => {
       body: JSON.stringify({
         check: e.target.checked,
       }),
-    }).then(() => {});
+    })
+    .then((res) => res.json())
+    .then((update) => {
+      updateRingkasanBelanja(update.harga, update.diskon, update.increment);
+    })
 
     checkAllSyncHandler();
   };
@@ -248,6 +241,7 @@ export const Cart = () => {
                         setRingkasanBelanja,
                       ]}
                       stateReRender={[reRender, setReRender]}
+                      updateRingkasanBelanja={updateRingkasanBelanja}
                     />
                   );
                 })}

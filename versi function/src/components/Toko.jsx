@@ -2,7 +2,21 @@ import { Produk } from "./Produk";
 
 export const Toko = (props) => {
   const toko = props.toko;
+  const [reRender, setReRender] = props.stateReRender;
+  const localCheckTokoHandler = async(e) => {
+    const productContainer = e.target.parentNode.nextSibling;
+    //classname =  product-container
 
+    Array.from(productContainer.children).forEach((element) => {
+      const input = element.getElementsByTagName("input")[0];
+      if (e.target.checked) {
+        input.checked = true;
+      } else {
+        input.checked = false;
+      }
+    })
+    await props.checkTokoHandler(e);
+  }
   return (
     <>
       <div
@@ -16,7 +30,7 @@ export const Toko = (props) => {
             defaultChecked={toko.check}
             data-for="toko"
             data-id={toko._id}
-            onChange={props.checkTokoHandler}
+            onChange={localCheckTokoHandler}
           />
           <div>
             <b>{toko.nama}</b>
@@ -34,6 +48,7 @@ export const Toko = (props) => {
                 stateRingkasanBelanja={props.stateRingkasanBelanja}
                 stateReRender={props.stateReRender}
                 checkProdukHandler={props.checkProdukHandler}
+                updateRingkasanBelanja = {props.updateRingkasanBelanja}
               />
             );
           })}

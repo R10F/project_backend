@@ -8,22 +8,30 @@ const checkToko = async (req) => {
     id,
     { check: update },
     { new: true }
-  );
-
-  // ada skenario ketika Toko CHECKED. lalu, user uncheck salah satu produk. maka, toko juga di-uncheck, tapi bukan berarti semua item kena uncheck (skenario A//toggleAll = false).
-  // satu lagi ketika emg smua checked dan user klik uncheck toko lagi (skenario B // toggleAll = true).
-  // utk skenario B, karena di produk enggak ada ID toko, handle dari frontend dulu baru panggil checkToko?
-  console.log(typeof req.body.toggleAll);
-  //pakai package body-parser bisa terima bool lgsg?
+  ).populate('produk');
 
   if (req.body.toggleAll === true) {
+    const flag = req.body.check ? 1 : -1;
+    let qty = 0;
+    let harga = 0;
+    let diskon = 0;
+
     const checkedProduk = updatedToko.produk;
+    checkedProduk.forEach((item) => {
+      if (item.check != req.body.check){
+        // console.log(item.nama);
+        qty += (item.qty * flag);
+        harga += (item.harga * item.qty * flag);
+        diskon += (item.harga * item.qty * item.diskon/100 * flag);
+      }
+    })
     const updatedProduk = await Produk.updateMany(
-      { _id: { $in: checkedProduk } },
-      { check: update },
-      { new: true }
+      { _id: { $in: checkedProduk }, check: !req.body.check},
+      { check: update }
     );
-    return [{ toko: updatedToko }, { produk: updatedProduk }];
+    // console.log(harga, diskon, qty);
+    const ret = {'harga': harga, 'diskon': diskon, 'increment': qty};
+    return ret;
   } else {
     return updatedToko;
   }
@@ -32,14 +40,12 @@ const checkToko = async (req) => {
 const editProduk = async (req) => {
   const id = req.params.id;
   const updatedData = req.body;
-  // if (updatedData.qty)
 
-  console.log(updatedData);
-  //update dlm btk json {notes: "string"} atau {qty: number}
-  const updatedProduk = Produk.findByIdAndUpdate(id, updatedData, {
+  const updatedProduk = await Produk.findByIdAndUpdate(id, updatedData, {
     new: true,
   });
-  return updatedProduk;
+  const ret = {'harga': updatedProduk.harga, 'diskon': updatedProduk.diskon || 0};
+  return ret;
 };
 
 exports.tokoApi = async (req, res) => {
@@ -55,10 +61,15 @@ exports.checkProduk = async (req, res) => {
   try {
     const id = req.params.id;
     const update = req.body;
-    const updatedProduk = await Produk.findByIdAndUpdate(id, update, {
-      new: true,
-    });
-    res.status(200).json(updatedProduk);
+    const updatedProduk = await Produk.findByIdAndUpdate(id, update, {new: true});
+
+    const flag = req.body.check ? 1 : -1;
+
+    const qty = updatedProduk.qty * flag;
+    const harga = updatedProduk.harga * qty;
+    const diskon = updatedProduk.diskon/100 * harga;
+    const ret = {'harga': harga, 'diskon': diskon || 0, 'increment': qty};
+    res.status(200).send(ret);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

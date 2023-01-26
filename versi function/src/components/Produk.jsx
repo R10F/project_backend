@@ -8,6 +8,7 @@ export const Produk = (props) => {
   const [reRender, setReRender] = props.stateReRender;
   const [ringkasanBelanja, setRingkasanBelanja] = props.stateRingkasanBelanja;
   const checkProdukHandler = props.checkProdukHandler;
+  const updateRingkasanBelanja = props.updateRingkasanBelanja;
 
   const minQty = 1;
   const maxQty = 7;
@@ -20,25 +21,32 @@ export const Produk = (props) => {
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
     setQty(newQty);
-    updateQtyHandler(newQty);
-    updateRingkasanBelanja();
+    updateQtyHandler(newQty, count);
+    // updateRingkasanBelanja();
   };
 
   const inputHandler = (e) => {
     let newQty = e.target.value;
     if (newQty < 1 || newQty > 7) return;
     if (newQty === "") newQty = 1;
+    updateQtyHandler(newQty, newQty - qty);
     setQty(newQty);
-    updateQtyHandler(newQty);
-    updateRingkasanBelanja();
+    // updateRingkasanBelanja();
   };
 
-  const updateQtyHandler = (newQty) => {
+  const updateQtyHandler = async (newQty, increment) => {
     fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
-    });
+    })
+    .then((res) => res.json())
+    .then((update) => {
+      // console.log(isChecked);
+      if (isChecked === true){
+        updateRingkasanBelanja(update.harga*increment, update.diskon*update.harga*increment/100, increment);
+      }
+    })
   };
 
   const handleButtonClick = () => {
@@ -72,17 +80,10 @@ export const Produk = (props) => {
     console.log(produk.note);
   };
 
-  const localCheckProdukHandler = (e) => {
+  const localCheckProdukHandler = async (e) => {
     setIsChecked(e.target.checked);
-    updateRingkasanBelanja();
-    checkProdukHandler(e);
-  };
-
-  const updateRingkasanBelanja = () => {
-    ringkasanBelanja[produk._id].qty = qty;
-    ringkasanBelanja[produk._id].isChecked = isChecked;
-    setRingkasanBelanja(ringkasanBelanja);
-    setReRender(reRender + 1);
+    await checkProdukHandler(e);
+    // updateRingkasanBelanja();
   };
 
   const deleteProdukHanlder = async () => {

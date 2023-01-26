@@ -3,16 +3,20 @@ import { currency } from "../utils/utils";
 export const RingkasanBelanja = (props) => {
   const ringkasanBelanja = props.ringkasanBelanja;
 
-  let totalQty = 0;
-  let hargaTotal = 0;
-  let hargaDiskon = 0;
-  Object.values(ringkasanBelanja).forEach((item) => {
-    if (item.isChecked) {
-      totalQty += item.qty;
-      hargaTotal += item.harga * item.qty;
-      hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-    }
-  });
+  let totalQty = ringkasanBelanja.totalQty;
+  let hargaTotal = ringkasanBelanja.hargaTotal;
+  let hargaDiskon = ringkasanBelanja.hargaDiskon;
+
+  // let totalQty = 0;
+  // let hargaTotal = 0;
+  // let hargaDiskon = 0;
+  // Object.values(ringkasanBelanja).forEach((item) => {
+  //   if (item.isChecked) {
+  //     totalQty += item.qty;
+  //     hargaTotal += item.harga * item.qty;
+  //     hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
+  //   }
+  // });
 
   return (
     <div className="card p-3">
