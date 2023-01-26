@@ -240,7 +240,7 @@ export const Cart = () => {
     );
     Swal.fire({
       title: `Anda Akan Melakukan Checkout Sebesar ${currency(
-        ringkasanBelanja.hargaTotal
+        ringkasanBelanja.hargaTotal - ringkasanBelanja.hargaDiskon
       )}`,
       text: "Transaksi ini tidak bisa dibatalkan",
       icon: "warning",
@@ -260,7 +260,7 @@ export const Cart = () => {
               Swal.fire(
                 "Berhasil",
                 `Anda Berhasil melakukan pembayaran sebesar ${currency(
-                  ringkasanBelanja.hargaTotal
+                  ringkasanBelanja.hargaTotal - ringkasanBelanja.hargaDiskon
                 )}`,
                 "success"
               );
