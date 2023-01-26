@@ -41,6 +41,7 @@ export const Cart = () => {
         // console.log(tempRingkasanBelanja);
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
+        checkAllSyncHandler();
       });
   }, [reRender]);
 
@@ -115,7 +116,7 @@ export const Cart = () => {
       updateRingkasanBelanja(update.harga, update.diskon, update.increment)
       // console.log(update);
     })
-    
+
     checkAllSyncHandler();
   };
 

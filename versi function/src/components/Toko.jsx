@@ -1,8 +1,15 @@
 import { Produk } from "./Produk";
+import { FiTrash2 } from "react-icons/fi";
+import { useState } from "react";
 
 export const Toko = (props) => {
   const toko = props.toko;
   const [reRender, setReRender] = props.stateReRender;
+  const [isChecked, setIsChecked] = useState(toko.check);
+  
+  const deleteTokoHandler = (e) => {
+    console.log(e.target.dataset.id);
+  }
   const localCheckTokoHandler = async(e) => {
     const productContainer = e.target.parentNode.nextSibling;
     //classname =  product-container
@@ -15,6 +22,7 @@ export const Toko = (props) => {
         input.checked = false;
       }
     })
+    setIsChecked(e.target.checked);
     await props.checkTokoHandler(e);
   }
   return (
@@ -32,9 +40,18 @@ export const Toko = (props) => {
             data-id={toko._id}
             onChange={localCheckTokoHandler}
           />
-          <div>
+          <div className="me-auto">
             <b>{toko.nama}</b>
             <p className="mb-0">{toko.kota}</p>
+          </div>
+          <div>
+            {isChecked === true ?
+              <button className="btn btn-link" onClick={deleteTokoHandler}>
+                <FiTrash2/>
+              </button> : 
+              <div />
+            }
+            
           </div>
         </div>
 
