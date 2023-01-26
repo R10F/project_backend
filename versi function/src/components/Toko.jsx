@@ -1,6 +1,7 @@
 import { Produk } from "./Produk";
 import { FiTrash2 } from "react-icons/fi";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 export const Toko = (props) => {
   const toko = props.toko;
@@ -10,22 +11,44 @@ export const Toko = (props) => {
     const id = "toko-" + toko._id;
     const productContainer = document.getElementById(id).children[1];
 
-    let idsToko  = toko._id;
+    let idsToko = toko._id;
     let idsProduk = [];
     Array.from(productContainer.children).forEach((element) => {
       idsProduk.push(element.dataset.id);
     });
-
-    fetch("http://localhost:8080/hapus-produk", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idsToko, idsProduk }),
-    }).then(() => {
-      setReRender(reRender + 1);
+    Swal.fire({
+      title: "Anda Yakin?",
+      text: "Anda Akan Menghapus Toko ini beserta dengan semua produk didalamnya",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus",
+    }).then((result) => {
+      if (result.value) {
+        fetch("http://localhost:8080/hapus-produk", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idsToko, idsProduk }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              Swal.fire("Deleted!", "Produk Berhasil Dihapus", "success");
+              setReRender(reRender + 1);
+            } else {
+              throw new Error("Failed to delete data");
+            }
+          })
+          .catch((error) => {
+            Swal.fire("Error!", error.message, "error");
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "Deleted Aborted", "error");
+      }
     });
-  }
-  
-  const localCheckTokoHandler = async(e) => {
+  };
+
+  const localCheckTokoHandler = async (e) => {
     const productContainer = e.target.parentNode.nextSibling;
     //classname =  product-container
 
@@ -38,7 +61,7 @@ export const Toko = (props) => {
       }
     });
     await props.checkTokoHandler(e);
-  }
+  };
   return (
     <>
       <div
@@ -59,8 +82,12 @@ export const Toko = (props) => {
             <p className="mb-0">{toko.kota}</p>
           </div>
           <div>
-            <button type="button" className="btn btn-link" onClick={deleteTokoHandler}>
-              <FiTrash2/>
+            <button
+              type="button"
+              className="btn btn-link"
+              onClick={deleteTokoHandler}
+            >
+              <FiTrash2 />
             </button>
           </div>
         </div>
@@ -75,7 +102,7 @@ export const Toko = (props) => {
                 stateRingkasanBelanja={props.stateRingkasanBelanja}
                 stateReRender={props.stateReRender}
                 checkProdukHandler={props.checkProdukHandler}
-                updateRingkasanBelanja = {props.updateRingkasanBelanja}
+                updateRingkasanBelanja={props.updateRingkasanBelanja}
               />
             );
           })}

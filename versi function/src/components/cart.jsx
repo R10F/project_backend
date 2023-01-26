@@ -3,11 +3,15 @@ import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
 
+import Swal from "sweetalert2";
+
 export const Cart = () => {
   const [toko, setToko] = useState([]);
   const [reRender, setReRender] = useState(0);
   const [ringkasanBelanja, setRingkasanBelanja] = useState({});
   const checkboxList = document.getElementsByClassName("checkbox");
+
+  console.log(checkboxList);
 
   const generateProduk = () => {
     fetch("http://localhost:8080/generate-sample-produk")
@@ -18,7 +22,7 @@ export const Cart = () => {
       });
   };
 
-    useEffect(() => {
+  useEffect(() => {
     fetch("http://localhost:8080/produk")
       .then((res) => res.json())
       .then((data) => {
@@ -28,16 +32,16 @@ export const Cart = () => {
         let hargaDiskon = 0;
         data.forEach((toko) => {
           toko.produk.forEach((item) => {
-            if (item.check){
+            if (item.check) {
               totalQty += item.qty;
               hargaTotal += item.harga * item.qty;
               hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
             }
           });
         });
-        tempRingkasanBelanja.totalQty = totalQty
-        tempRingkasanBelanja.hargaTotal = hargaTotal
-        tempRingkasanBelanja.hargaDiskon = hargaDiskon
+        tempRingkasanBelanja.totalQty = totalQty;
+        tempRingkasanBelanja.hargaTotal = hargaTotal;
+        tempRingkasanBelanja.hargaDiskon = hargaDiskon;
         // console.log(tempRingkasanBelanja);
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
@@ -46,7 +50,7 @@ export const Cart = () => {
   }, [reRender]);
 
   const updateRingkasanBelanja = (harga, diskon, increment) => {
-    let tempRingkasanBelanja = {}
+    let tempRingkasanBelanja = {};
     tempRingkasanBelanja.totalQty = ringkasanBelanja.totalQty + increment;
     tempRingkasanBelanja.hargaTotal = ringkasanBelanja.hargaTotal + harga;
     tempRingkasanBelanja.hargaDiskon = ringkasanBelanja.hargaDiskon + diskon;
@@ -94,6 +98,7 @@ export const Cart = () => {
     });
 
     const checkAll = document.getElementById("check-all");
+
     if (count === checkboxList.length) {
       checkAll.checked = true;
     } else {
@@ -111,11 +116,11 @@ export const Cart = () => {
         toggleAll: true,
       }),
     })
-    .then((res) => res.json())
-    .then((update) => {
-      updateRingkasanBelanja(update.harga, update.diskon, update.increment)
-      // console.log(update);
-    })
+      .then((res) => res.json())
+      .then((update) => {
+        updateRingkasanBelanja(update.harga, update.diskon, update.increment);
+        // console.log(update);
+      });
 
     checkAllSyncHandler();
   };
@@ -160,10 +165,10 @@ export const Cart = () => {
         check: e.target.checked,
       }),
     })
-    .then((res) => res.json())
-    .then((update) => {
-      updateRingkasanBelanja(update.harga, update.diskon, update.increment);
-    })
+      .then((res) => res.json())
+      .then((update) => {
+        updateRingkasanBelanja(update.harga, update.diskon, update.increment);
+      });
 
     checkAllSyncHandler();
   };
@@ -183,13 +188,39 @@ export const Cart = () => {
         }
       }
     );
-
-    fetch("http://localhost:8080/hapus-produk", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idsToko, idsProduk }),
-    }).then(() => {
-      setReRender(reRender + 1);
+    Swal.fire({
+      title: "Anda Yakin",
+      text: "Anda Akan Menghapus Seluruh Produk",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Hapus",
+    }).then((result) => {
+      if (result.value) {
+        fetch("http://localhost:8080/hapus-produk", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idsToko, idsProduk }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              Swal.fire(
+                "Deleted!",
+                "Seluruh Produk Berhasil Dihapus",
+                "success"
+              );
+              setReRender(reRender + 1);
+            } else {
+              throw new Error("Failed to delete data");
+            }
+          })
+          .catch((error) => {
+            Swal.fire("Error!", error.message, "error");
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "Deleted Aborted", "error");
+      }
     });
   };
 
@@ -200,7 +231,7 @@ export const Cart = () => {
       {toko !== undefined &&
         (toko.length === 0 ? (
           <div className="alert alert-warning">
-            Oops, shopping cart is empty!
+            Oops, shopping cart is empty! &nbsp;
             <button
               className="btn btn-success fw-bold"
               onClick={generateProduk}

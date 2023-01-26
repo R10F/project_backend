@@ -1,4 +1,5 @@
 import { currency } from "../utils/utils";
+import Swal from "sweetalert2";
 
 export const RingkasanBelanja = (props) => {
   const ringkasanBelanja = props.ringkasanBelanja;
@@ -17,6 +18,13 @@ export const RingkasanBelanja = (props) => {
   //     hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
   //   }
   // });
+
+  const btnBuy = () => {
+    Swal.fire({
+      icon: "success",
+      title: "Terima kasih sudah Berbelanja di toko kami",
+    });
+  };
 
   return (
     <div className="card p-3">
@@ -41,6 +49,7 @@ export const RingkasanBelanja = (props) => {
         type="button"
         className="btn btn-success"
         disabled={totalQty === 0}
+        onClick={btnBuy}
       >
         Beli ({totalQty})
       </button>
