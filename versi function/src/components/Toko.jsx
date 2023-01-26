@@ -5,11 +5,26 @@ import { useState } from "react";
 export const Toko = (props) => {
   const toko = props.toko;
   const [reRender, setReRender] = props.stateReRender;
-  const [isChecked, setIsChecked] = useState(toko.check);
-  
-  const deleteTokoHandler = (e) => {
-    console.log(e.target.dataset.id);
+
+  const deleteTokoHandler = async () => {
+    const id = "toko-" + toko._id;
+    const productContainer = document.getElementById(id).children[1];
+
+    let idsToko  = toko._id;
+    let idsProduk = [];
+    Array.from(productContainer.children).forEach((element) => {
+      idsProduk.push(element.dataset.id);
+    });
+
+    fetch("http://localhost:8080/hapus-produk", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idsToko, idsProduk }),
+    }).then(() => {
+      setReRender(reRender + 1);
+    });
   }
+  
   const localCheckTokoHandler = async(e) => {
     const productContainer = e.target.parentNode.nextSibling;
     //classname =  product-container
@@ -21,8 +36,7 @@ export const Toko = (props) => {
       } else {
         input.checked = false;
       }
-    })
-    setIsChecked(e.target.checked);
+    });
     await props.checkTokoHandler(e);
   }
   return (
@@ -45,13 +59,9 @@ export const Toko = (props) => {
             <p className="mb-0">{toko.kota}</p>
           </div>
           <div>
-            {isChecked === true ?
-              <button className="btn btn-link" onClick={deleteTokoHandler}>
-                <FiTrash2/>
-              </button> : 
-              <div />
-            }
-            
+            <button type="button" className="btn btn-link" onClick={deleteTokoHandler}>
+              <FiTrash2/>
+            </button>
           </div>
         </div>
 
