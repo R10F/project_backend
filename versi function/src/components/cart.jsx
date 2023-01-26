@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
+import { currency } from "../utils/utils";
 
 import Swal from "sweetalert2";
 
@@ -10,8 +11,6 @@ export const Cart = () => {
   const [reRender, setReRender] = useState(0);
   const [ringkasanBelanja, setRingkasanBelanja] = useState({});
   const checkboxList = document.getElementsByClassName("checkbox");
-
-  console.log(checkboxList);
 
   const generateProduk = () => {
     fetch("http://localhost:8080/generate-sample-produk")
@@ -224,6 +223,61 @@ export const Cart = () => {
     });
   };
 
+  const belanja = async () => {
+    let idsToko = [];
+    let idsProduk = [];
+
+    Array.from(document.getElementsByClassName("checkbox")).forEach(
+      (element) => {
+        if (element.checked) {
+          if (element.dataset.for === "toko") {
+            idsToko.push(element.dataset.id);
+          } else {
+            idsProduk.push(element.dataset.id);
+          }
+        }
+      }
+    );
+    Swal.fire({
+      title: `Anda Akan Melakukan Checkout Sebesar ${currency(
+        ringkasanBelanja.hargaTotal
+      )}`,
+      text: "Transaksi ini tidak bisa dibatalkan",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if (result.value) {
+        fetch("http://localhost:8080/hapus-produk", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idsToko, idsProduk }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              Swal.fire(
+                "Berhasil",
+                `Anda Berhasil melakukan pembayaran sebesar ${currency(
+                  ringkasanBelanja.hargaTotal
+                )}`,
+                "success"
+              );
+              setReRender(reRender + 1);
+            } else {
+              throw new Error("Failed to Checkout data");
+            }
+          })
+          .catch((error) => {
+            Swal.fire("Error!", error.message, "error");
+          });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire("Cancelled", "Proses Checkout Dibatalkan", "error");
+      }
+    });
+  };
+
   return (
     <main className="container mb-5 py-5">
       <h3 className="fw-normal mb-4 text-black">Shopping Cart</h3>
@@ -280,7 +334,10 @@ export const Cart = () => {
               </div>
             </div>
             <div className="col-md-4">
-              <RingkasanBelanja ringkasanBelanja={ringkasanBelanja} />
+              <RingkasanBelanja
+                ringkasanBelanja={ringkasanBelanja}
+                shopping={belanja}
+              />
             </div>
           </div>
         ))}
