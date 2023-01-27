@@ -113,7 +113,7 @@ export const Produk = (props) => {
           onChange={localCheckProdukHandler}
         />
 
-        <div className="d-flex flex-column flex-fill">
+        <div className="d-flex flex-column flex-fill w-90">
           <div className="d-flex flex-row">
             <div className="p-2">
               <img
