@@ -24,32 +24,6 @@ export const Layout = () => {
             >
               <span className="navbar-toggler-icon"></span>
             </button>
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <ul className="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li className="nav-item">
-                  <a href="/" className="nav-link">
-                    Home
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a href="/" className="nav-link">
-                    All Products
-                  </a>
-                </li>
-              </ul>
-              {/* <div className="d-flex">
-                <a href="/" className="btn btn-outline-dark">
-                  <i className="bi-cart-fill me-1"></i>
-                  Cart
-                  <span className="badge bg-dark text-white ms-1 rounded-pill">
-                    0
-                  </span>
-                </a>
-              </div> */}
-            </div>
           </div>
         </nav>
       </header>
