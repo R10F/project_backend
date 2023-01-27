@@ -16,7 +16,7 @@ export const Produk = (props) => {
   const [qty, setQty] = useState(produk.qty);
   const [isChecked, setIsChecked] = useState(produk.check);
   const [isInput, setIsInput] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(produk.note);
 
   const changeByButtonHandler = (count) => {
     const newQty = qty + count;
@@ -94,6 +94,7 @@ export const Produk = (props) => {
     const productContainer = document.querySelector(
       `#toko-${idToko} .product-container`
     );
+
     const idsToko = productContainer.childElementCount === 1 ? [idToko] : [];
     const idsProduk = [produk._id];
 
@@ -158,17 +159,21 @@ export const Produk = (props) => {
                   maxLength="144"
                   autoFocus
                 >
-                  {inputValue === "" ? produk.note : inputValue}
+                  {inputValue
+                    ? inputValue
+                    : produk.note !== ""
+                    ? ""
+                    : inputValue}
                 </textarea>
               ) : (
                 <div className="d-flex flex-row mb-3">
                   <div className="p-2">
                     <p className="m-0 noteProduk">
-                      {inputValue === ""
-                        ? produk.note
-                        : produk.note === ""
+                      {inputValue
                         ? inputValue
-                        : ""}
+                        : produk.note !== ""
+                        ? ""
+                        : inputValue}
                     </p>
                   </div>
                   <div className="p-2">
@@ -179,8 +184,8 @@ export const Produk = (props) => {
                     >
                       {inputValue
                         ? "Ubah"
-                        : produk.note
-                        ? "Ubah"
+                        : produk.note !== ""
+                        ? "Tulis Catatan"
                         : "Tulis Catatan"}
                     </button>
                   </div>

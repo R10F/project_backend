@@ -2,6 +2,7 @@ import { Produk } from "./Produk";
 import { FiTrash2 } from "react-icons/fi";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import "aos/dist/aos.css";
 
 export const Toko = (props) => {
   const toko = props.toko;

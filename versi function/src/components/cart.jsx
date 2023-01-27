@@ -3,6 +3,8 @@ import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
 import { currency } from "../utils/utils";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 import Swal from "sweetalert2";
 
@@ -46,6 +48,7 @@ export const Cart = () => {
         setRingkasanBelanja(tempRingkasanBelanja);
         checkAllSyncHandler();
       });
+    AOS.init();
   }, [reRender]);
 
   const updateRingkasanBelanja = (harga, diskon, increment) => {
@@ -62,8 +65,7 @@ export const Cart = () => {
     Array.from(checkboxList).forEach((element) => {
       if (element.dataset.for === "toko") {
         idsToko.push(element.dataset.id);
-      }
-      else{
+      } else {
         idsProduk.push(element.dataset.id);
       }
       if (e.target.checked) {
@@ -73,19 +75,19 @@ export const Cart = () => {
       }
     });
 
-    fetch('http://localhost:8080/api/checkAll', {
+    fetch("http://localhost:8080/api/checkAll", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         check: e.target.checked,
         toko: idsToko,
-        produk: idsProduk
+        produk: idsProduk,
+      }),
+    })
+      .then(() => {
+        setReRender(reRender + 1);
       })
-    })
-    .then(() => {
-      setReRender(reRender+1);
-    })
-    .catch((err) => console.log("error", err));
+      .catch((err) => console.log("error", err));
     // console.log(idsToko);
     // let promises = [];
     // for (const idToko of idsToko) {
@@ -195,6 +197,7 @@ export const Cart = () => {
 
     Array.from(document.getElementsByClassName("checkbox")).forEach(
       (element) => {
+        console.log(element);
         if (element.checked) {
           if (element.dataset.for === "toko") {
             idsToko.push(element.dataset.id);
@@ -312,7 +315,11 @@ export const Cart = () => {
           </div>
         ) : (
           <div className="row">
-            <div className="col-md-8">
+            <div
+              className="col-md-8"
+              data-aos="fade-up"
+              data-aos-duration="2000"
+            >
               <div className="d-flex mb-3 align-items-center p-3 pe-2 shadow-sm">
                 <input
                   type="checkbox"
@@ -350,7 +357,11 @@ export const Cart = () => {
                 })}
               </div>
             </div>
-            <div className="col-md-4">
+            <div
+              className="col-md-4"
+              data-aos="fade-up"
+              data-aos-duration="2000"
+            >
               <RingkasanBelanja
                 ringkasanBelanja={ringkasanBelanja}
                 shopping={belanja}
