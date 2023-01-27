@@ -55,10 +55,13 @@ export const Cart = () => {
 
   const checkAllHandler = async (e) => {
     let idsToko = [];
-
+    let idsProduk = [];
     Array.from(checkboxList).forEach((element) => {
       if (element.dataset.for === "toko") {
         idsToko.push(element.dataset.id);
+      }
+      else{
+        idsProduk.push(element.dataset.id);
       }
       if (e.target.checked) {
         element.checked = true;
@@ -66,25 +69,39 @@ export const Cart = () => {
         element.checked = false;
       }
     });
-    console.log(idsToko);
-    let promises = [];
-    for (const idToko of idsToko) {
-      promises.push(
-        fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            check: e.target.checked,
-            toggleAll: true,
-          }),
-        })
-      );
-    }
-    Promise.all(promises)
-      .then(() => {
-        setReRender(reRender + 1);
+
+    fetch('http://localhost:8080/api/checkAll', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        check: e.target.checked,
+        toko: idsToko,
+        produk: idsProduk
       })
-      .catch((err) => console.log("error", err));
+    })
+    .then(() => {
+      setReRender(reRender+1);
+    })
+    .catch((err) => console.log("error", err));
+    // console.log(idsToko);
+    // let promises = [];
+    // for (const idToko of idsToko) {
+    //   promises.push(
+    //     fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+    //       method: "PUT",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify({
+    //         check: e.target.checked,
+    //         toggleAll: true,
+    //       }),
+    //     })
+    //   );
+    // }
+    // Promise.all(promises)
+    //   .then(() => {
+    //     setReRender(reRender + 1);
+    //   })
+    //   .catch((err) => console.log("error", err));
   };
 
   const checkAllSyncHandler = async () => {

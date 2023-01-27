@@ -84,6 +84,24 @@ exports.checkToko = async (req, res) => {
   }
 };
 
+exports.checkAll = async(req, res) => {
+  try{
+    const toko = req.body.toko
+    const produk = req.body.produk
+    const update = req.body.check
+    await Toko.updateMany(
+      { _id: { $in: toko }, check: !update},
+      { check: update }
+    );
+    await Produk.updateMany(
+      { _id: { $in: produk }, check: !update},
+      { check: update }
+    );
+  } catch(err){
+    res.status(200).json({message: err.message});
+  }
+}
+
 exports.editProduk = async (req, res) => {
   try {
     const update = await editProduk(req);

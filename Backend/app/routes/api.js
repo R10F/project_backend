@@ -8,4 +8,5 @@ module.exports = (router) => {
   router.put("/api/checkProduk/:id", controllersApi.checkProduk);
   router.put("/api/checkToko/:id", controllersApi.checkToko);
   router.put("/api/editProduk/:id", controllersApi.editProduk);
+  router.put("/api/checkAll", controllersApi.checkAll);
 };
