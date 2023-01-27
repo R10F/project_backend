@@ -307,7 +307,7 @@ export const Cart = () => {
                   id="check-all"
                   onChange={checkAllHandler}
                 />
-                <h3 className="fs-6 p-2 mb-0">Pilih Semua</h3>
+                <label htmlFor="check-all" className="fs-6 fw-bold p-2 mb-0">Pilih Semua</label>
 
                 <button
                   className="d-flex align-items-center btn btn-link text-decoration-none p-2 ms-auto"
