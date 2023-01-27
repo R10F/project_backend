@@ -7,19 +7,8 @@ export const RingkasanBelanja = (props) => {
   let hargaTotal = ringkasanBelanja.hargaTotal;
   let hargaDiskon = ringkasanBelanja.hargaDiskon;
 
-  // let totalQty = 0;
-  // let hargaTotal = 0;
-  // let hargaDiskon = 0;
-  // Object.values(ringkasanBelanja).forEach((item) => {
-  //   if (item.isChecked) {
-  //     totalQty += item.qty;
-  //     hargaTotal += item.harga * item.qty;
-  //     hargaDiskon += (item.harga * item.qty * item.diskon) / 100;
-  //   }
-  // });
-
   return (
-    <div className="card p-3">
+    <div className="ringkasan-belanja card p-3 position-sticky">
       <h3 className="fs-5">Ringkasan Belanja</h3>
 
       <p className="d-flex justify-content-between">

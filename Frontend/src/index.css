@@ -1,3 +1,7 @@
+main {
+  min-height: 80vh;
+}
+
 input[type="checkbox"] {
   width: 25px;
   height: 25px;
@@ -11,9 +15,9 @@ input[type="checkbox"] {
   min-width: 150px;
 }
 
-.garis {
+.toko {
   border-top-width: 8px;
-  border-top-color: #f3f4f5;
+  border-top-color: #198754;
 }
 
 .product-img {
@@ -28,4 +32,8 @@ input[type="checkbox"] {
 
 #note::placeholder {
   font-size: 14px;
+}
+
+.ringkasan-belanja {
+  top: 40px;
 }

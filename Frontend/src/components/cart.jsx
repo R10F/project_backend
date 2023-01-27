@@ -3,10 +3,10 @@ import { FiTrash2 } from "react-icons/fi";
 import { Toko } from "./Toko";
 import { RingkasanBelanja } from "./RingkasanBelanja";
 import { currency } from "../utils/utils";
+import Swal from "sweetalert2";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import Swal from "sweetalert2";
 
 export const Cart = () => {
   const [toko, setToko] = useState([]);
@@ -14,8 +14,10 @@ export const Cart = () => {
   const [ringkasanBelanja, setRingkasanBelanja] = useState({});
   const checkboxList = document.getElementsByClassName("checkbox");
 
+  AOS.init();
+
   const generateProduk = () => {
-    fetch("http://localhost:8080/generate-sample-produk")
+    fetch("http://localhost:8080/api/v1/sample/generate-sample-produk")
       .then((res) => res.json())
       .then((data) => {
         setToko(data);
@@ -24,7 +26,7 @@ export const Cart = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:8080/produk")
+    fetch("http://localhost:8080/api/v1/produk")
       .then((res) => res.json())
       .then((data) => {
         let tempRingkasanBelanja = {};
@@ -43,12 +45,10 @@ export const Cart = () => {
         tempRingkasanBelanja.totalQty = totalQty;
         tempRingkasanBelanja.hargaTotal = hargaTotal;
         tempRingkasanBelanja.hargaDiskon = hargaDiskon;
-        // console.log(tempRingkasanBelanja);
         setToko(data);
         setRingkasanBelanja(tempRingkasanBelanja);
         checkAllSyncHandler();
       });
-    AOS.init();
   }, [reRender]);
 
   const updateRingkasanBelanja = (harga, diskon, increment) => {
@@ -75,7 +75,7 @@ export const Cart = () => {
       }
     });
 
-    fetch("http://localhost:8080/api/checkAll", {
+    fetch("http://localhost:8080/api/v1/checkAll", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -88,25 +88,6 @@ export const Cart = () => {
         setReRender(reRender + 1);
       })
       .catch((err) => console.log("error", err));
-    // console.log(idsToko);
-    // let promises = [];
-    // for (const idToko of idsToko) {
-    //   promises.push(
-    //     fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
-    //       method: "PUT",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify({
-    //         check: e.target.checked,
-    //         toggleAll: true,
-    //       }),
-    //     })
-    //   );
-    // }
-    // Promise.all(promises)
-    //   .then(() => {
-    //     setReRender(reRender + 1);
-    //   })
-    //   .catch((err) => console.log("error", err));
   };
 
   const checkAllSyncHandler = async () => {
@@ -126,7 +107,7 @@ export const Cart = () => {
 
   const checkTokoHandler = (e) => {
     const idToko = e.target.dataset.id;
-    fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+    fetch(`http://localhost:8080/api/v1/checkToko/${idToko}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -137,15 +118,14 @@ export const Cart = () => {
       .then((res) => res.json())
       .then((update) => {
         updateRingkasanBelanja(update.harga, update.diskon, update.increment);
-        // console.log(update);
       });
 
     checkAllSyncHandler();
   };
 
   const checkProdukHandler = (e) => {
+    // Class product-container dari toko
     const productContainer = e.target.parentNode.parentNode;
-    //class product-container dari toko
 
     let count = 0;
     Array.from(productContainer.children).forEach((element) => {
@@ -153,9 +133,9 @@ export const Cart = () => {
       if (input.checked) count++;
     });
 
+    // Checkbox toko
     const checkToko =
       productContainer.previousSibling.getElementsByTagName("input")[0];
-    // checkbox toko
     let newCheckState;
     if (count === productContainer.children.length) {
       newCheckState = true;
@@ -164,7 +144,7 @@ export const Cart = () => {
     }
     if (checkToko.checked ^ newCheckState) {
       const idToko = checkToko.dataset.id;
-      fetch(`http://localhost:8080/api/checkToko/${idToko}`, {
+      fetch(`http://localhost:8080/api/v1/checkToko/${idToko}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -176,7 +156,7 @@ export const Cart = () => {
     checkToko.checked = newCheckState;
 
     const idProduk = e.target.dataset.id;
-    fetch(`http://localhost:8080/api/checkProduk/${idProduk}`, {
+    fetch(`http://localhost:8080/api/v1/checkProduk/${idProduk}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -197,7 +177,6 @@ export const Cart = () => {
 
     Array.from(document.getElementsByClassName("checkbox")).forEach(
       (element) => {
-        console.log(element);
         if (element.checked) {
           if (element.dataset.for === "toko") {
             idsToko.push(element.dataset.id);
@@ -217,7 +196,7 @@ export const Cart = () => {
       confirmButtonText: "Hapus",
     }).then((result) => {
       if (result.value) {
-        fetch("http://localhost:8080/hapus-produk", {
+        fetch("http://localhost:8080/api/v1/hapus-produk", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ idsToko, idsProduk }),
@@ -270,7 +249,7 @@ export const Cart = () => {
       confirmButtonText: "Ya",
     }).then((result) => {
       if (result.value) {
-        fetch("http://localhost:8080/hapus-produk", {
+        fetch("http://localhost:8080/api/v1/hapus-produk", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ idsToko, idsProduk }),
@@ -299,18 +278,18 @@ export const Cart = () => {
   };
 
   return (
-    <main className="container mb-5 py-5">
+    <main className="container my-5 py-5">
       <h3 className="fw-normal mb-4 text-black">Shopping Cart</h3>
 
       {toko !== undefined &&
         (toko.length === 0 ? (
           <div className="alert alert-warning">
-            Oops, shopping cart is empty! &nbsp;
+            Keranjang kosong
             <button
-              className="btn btn-success fw-bold"
+              className="btn btn-success fw-bold ms-3"
               onClick={generateProduk}
             >
-              Add something to your cart !
+              Mari belanja
             </button>
           </div>
         ) : (

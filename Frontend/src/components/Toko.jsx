@@ -1,6 +1,5 @@
 import { Produk } from "./Produk";
 import { FiTrash2 } from "react-icons/fi";
-import { useState } from "react";
 import Swal from "sweetalert2";
 import "aos/dist/aos.css";
 
@@ -27,7 +26,7 @@ export const Toko = (props) => {
       confirmButtonText: "Hapus",
     }).then((result) => {
       if (result.value) {
-        fetch("http://localhost:8080/hapus-produk", {
+        fetch("http://localhost:8080/api/v1/hapus-produk", {
           method: "DELETE",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ idsToko, idsProduk }),
@@ -51,7 +50,6 @@ export const Toko = (props) => {
 
   const localCheckTokoHandler = async (e) => {
     const productContainer = e.target.parentNode.nextSibling;
-    //classname =  product-container
 
     Array.from(productContainer.children).forEach((element) => {
       const input = element.getElementsByTagName("input")[0];
@@ -66,7 +64,7 @@ export const Toko = (props) => {
   return (
     <>
       <div
-        className="card garis rounded-3 mb-4 shadow-sm"
+        className="card toko rounded-3 mb-4 shadow-sm p-2 pb-0"
         id={"toko-" + toko._id}
       >
         <div className="d-flex w-100 align-items-center p-3">

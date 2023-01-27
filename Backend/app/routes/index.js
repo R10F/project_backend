@@ -1,10 +1,11 @@
-const express = require('express');
-const router = express.Router();
+const sampleRoutes = require("./sample.routes");
+const produkRoutes = require('./produk.routes');
 
-const loadSample = require('./sampleDatatmp');
-const api = require('./api');
-
-loadSample(router);
-api(router);
-
-module.exports = router;
+module.exports = (app) => {
+  app.get("/", (req, res) => {
+    res.json({ message: "Welcome" });
+  });
+  
+  app.use('/api/v1', produkRoutes);
+  app.use('/api/v1/sample', sampleRoutes);
+};

@@ -2,62 +2,50 @@ const toko = [
   {
     nama: "Kahf Official",
     kota: "Jakarta Selatan",
-    logo: "",
   },
   {
     nama: "Frisian Flag Official",
     kota: "Tangerang Selatan",
-    logo: "",
   },
   {
     nama: "Orient Food",
     kota: "Surabaya",
-    logo: "",
   },
   {
     nama: "Dettol, Vanish, & Harpic Official Store",
     kota: "Medan",
-    logo: "",
   },
   {
     nama: "Kerastase by MayMaySalon",
     kota: "Jakarta Barat",
-    logo: "",
   },
   {
     nama: "Keychron Indonesia",
     kota: "Jakarta Barat",
-    logo: "",
   },
   {
     nama: "Divipard",
     kota: "Jakarta Barat",
-    logo: "",
   },
   {
     nama: "fantemil store",
     kota: "Jakarta Barat",
-    logo: "",
   },
   {
     nama: "Essenzo Indonesia Official",
     kota: "Tangerang Selatan",
-    logo: "",
   },
   {
     nama: "Miisoo Official Shop",
     kota: "Tangerang Selatan",
-    logo: "",
   },
   {
     nama: "Skintific Official Store",
     kota: "Jakarta",
-    logo: "",
   },
   {
     nama: "thinkplus-Lenovo",
     kota: "Tangerang",
-    logo: "",
   },
 ];
 

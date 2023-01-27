@@ -10,9 +10,6 @@ const tokoSchema = new Schema({
         required: true,
         type: String
     },
-    'logo': {
-        type: String
-    },
     'check': {
         type: Boolean,
         default: false

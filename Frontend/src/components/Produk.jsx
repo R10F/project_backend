@@ -6,7 +6,6 @@ export const Produk = (props) => {
   const produk = props.produk;
   const idToko = props.idToko;
   const [reRender, setReRender] = props.stateReRender;
-  const [ringkasanBelanja, setRingkasanBelanja] = props.stateRingkasanBelanja;
   const checkProdukHandler = props.checkProdukHandler;
   const updateRingkasanBelanja = props.updateRingkasanBelanja;
 
@@ -22,7 +21,6 @@ export const Produk = (props) => {
     const newQty = qty + count;
     setQty(newQty);
     updateQtyHandler(newQty, count);
-    // updateRingkasanBelanja();
   };
 
   const inputHandler = (e) => {
@@ -31,18 +29,18 @@ export const Produk = (props) => {
     if (newQty === "") newQty = 1;
     updateQtyHandler(newQty, newQty - qty);
     setQty(newQty);
-    // updateRingkasanBelanja();
   };
 
   const updateQtyHandler = async (newQty, increment) => {
-    fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
+    fetch(`http://localhost:8080/api/v1/editProduk/${produk._id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
     })
       .then((res) => res.json())
       .then((update) => {
-        // console.log(isChecked);
+        const id = 'produk-' + produk._id;
+        const isChecked = document.getElementById(id).children[0].checked;
         if (isChecked === true) {
           updateRingkasanBelanja(
             update.harga * increment,
@@ -59,7 +57,6 @@ export const Produk = (props) => {
 
   const handleInputChange = () => {
     setInputValue(inputValue);
-    // setButtonText("Ubah");
   };
 
   const addNote = (e) => {
@@ -69,25 +66,19 @@ export const Produk = (props) => {
 
       setInputValue(noteProduk);
 
-      fetch(`http://localhost:8080/api/editProduk/${produk._id}`, {
+      fetch(`http://localhost:8080/api/v1/editProduk/${produk._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           note: noteProduk,
         }),
-      })
-        .then((resp) => {
-          resp.json();
-        })
-        .then((data) => {});
+      });
     }
-    console.log(produk.note);
   };
 
   const localCheckProdukHandler = async (e) => {
     setIsChecked(e.target.checked);
     await checkProdukHandler(e);
-    // updateRingkasanBelanja();
   };
 
   const deleteProdukHanlder = async () => {
@@ -98,7 +89,7 @@ export const Produk = (props) => {
     const idsToko = productContainer.childElementCount === 1 ? [idToko] : [];
     const idsProduk = [produk._id];
 
-    fetch("http://localhost:8080/hapus-produk", {
+    fetch("http://localhost:8080/api/v1/hapus-produk", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ idsToko, idsProduk }),
@@ -109,7 +100,7 @@ export const Produk = (props) => {
 
   return (
     <>
-      <div className="d-flex flex-row card rounded-3 mb-2 p-3">
+      <div className="d-flex flex-row card rounded-3 mb-2 p-3" id={'produk-' + produk._id}>
         <input
           type="checkbox"
           className="checkbox"
@@ -147,8 +138,8 @@ export const Produk = (props) => {
             </div>
           </div>
 
-          <div className="d-flex align-items-center">
-            <div className="product-note me-auto p-2">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div className="product-note p-2">
               {isInput ? (
                 <textarea
                   className="form-control"

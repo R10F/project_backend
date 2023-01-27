@@ -1,5 +1,30 @@
-const Toko = require("../models/toko.model");
-const Produk = require("../models/produk.model");
+const db = require("../models");
+const Toko = db.toko;
+const Produk = db.produk;
+
+
+exports.getAllProduk = (req, res) => {
+  try {
+    Toko.find()
+      .populate("produk")
+      .then((result) => {
+        res.status(200).json(result);
+      });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.deleteProduk = async (req, res) => {
+  try {
+    await Toko.deleteMany({ _id: { $in: req.body.idsToko || [] } });
+    await Produk.deleteMany({ _id: { $in: req.body.idsProduk } });
+
+    res.status(200).send();
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
 const checkToko = async (req) => {
   const id = req.params.id;
@@ -19,7 +44,6 @@ const checkToko = async (req) => {
     const checkedProduk = updatedToko.produk;
     checkedProduk.forEach((item) => {
       if (item.check != req.body.check) {
-        // console.log(item.nama);
         qty += item.qty * flag;
         harga += item.harga * item.qty * flag;
         diskon += ((item.harga * item.qty * item.diskon) / 100) * flag;
@@ -29,7 +53,6 @@ const checkToko = async (req) => {
       { _id: { $in: checkedProduk }, check: !req.body.check },
       { check: update }
     );
-    // console.log(harga, diskon, qty);
     const ret = { harga: harga, diskon: diskon, increment: qty };
     return ret;
   } else {
@@ -46,15 +69,6 @@ const editProduk = async (req) => {
   });
   const ret = { harga: updatedProduk.harga, diskon: updatedProduk.diskon || 0 };
   return ret;
-};
-
-exports.tokoApi = async (req, res) => {
-  try {
-    const item = await Toko.find();
-    res.json({ item });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
 };
 
 exports.checkProduk = async (req, res) => {
