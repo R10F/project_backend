@@ -122,7 +122,7 @@ const produk = [
     nama: "Dettol Hand Sanitizer & Surface Spray 2in1 50ml - Citrus Tea",
     harga: 18100,
     qty: 1,
-    diskon: 9,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/11/1/4a03fa01-f18b-4569-b7f8-6e71aec03686.png",
   },
@@ -130,7 +130,7 @@ const produk = [
     nama: "Kerastase Fresh Affair Refreshing Dry Shampoo Menyegarkan Rambut Lepek",
     harga: 390000,
     qty: 1,
-    diskon: 22,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/1/7/ac416696-9289-42c0-830f-04ac81e98cff.jpg",
   },
@@ -138,7 +138,7 @@ const produk = [
     nama: "Kerastase Specifique Bain Prevention 250ml Shampoo Anti Rontok",
     harga: 840000,
     qty: 1,
-    diskon: 45,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/hDjmkQ/2023/1/21/54955db8-8788-4e46-ae1e-81c4c1ea30b2.jpg",
   },
@@ -154,7 +154,7 @@ const produk = [
     nama: "Keychron Q10 Alice Layout QMK Fully Assembled Knob Mechanical Keyboard - Silver Grey B, Red Switch",
     harga: 4000000,
     qty: 1,
-    diskon: 5,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/11/27/20125844-60c8-4a76-92a1-7d4d8cc2c44f.jpg",
   },
@@ -162,7 +162,7 @@ const produk = [
     nama: "Divipard Mouse Wireless Gaming Charging Honey Comb Q13 RGB Mode 7200 - Biru Muda",
     harga: 300000,
     qty: 1,
-    diskon: 62,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/8/12/ff2718fe-3d27-4c73-9b21-468d64c54c94.jpg",
   },
@@ -170,7 +170,7 @@ const produk = [
     nama: "Optical Mouse Kabel USB G5 Unitech Wired USB 1000DPI - Biru",
     harga: 100000,
     qty: 1,
-    diskon: 87,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/7/14/1723ec17-b2b5-47ef-b4df-d2aa440d7552.jpg",
   },
@@ -178,7 +178,7 @@ const produk = [
     nama: "Karpet Minimalis Import Polyester 100X150cm Anti Slip Aesthetic - 229",
     harga: 150000,
     qty: 1,
-    diskon: 1,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/9/22/a9ba00f6-3572-4194-bc7b-1890e2eb4fba.jpg",
   },
@@ -186,7 +186,7 @@ const produk = [
     nama: "Karpet Minimalis Aesthetic Import Polyester 150x200cm Anti Slip - 190",
     harga: 298000,
     qty: 1,
-    diskon: 1,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/9/8/bdd4222c-747b-41fa-b515-ddc91ed3dbcf.jpg",
   },
@@ -194,7 +194,7 @@ const produk = [
     nama: "Essenzo Beam Diffuser 300ml + Remote",
     harga: 395000,
     qty: 1,
-    diskon: 24,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/1/3/67a67e19-8d4f-4a7b-a674-f6a260fbd332.jpg",
   },
@@ -202,7 +202,7 @@ const produk = [
     nama: "Essenzo Kids Honey - Madu Fungsional untuk Bantu Nafsu Makan",
     harga: 215000,
     qty: 1,
-    diskon: 18,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2023/1/3/5bf507b0-62fd-455c-87cc-40efd03e6ea5.jpg",
   },
@@ -210,7 +210,7 @@ const produk = [
     nama: "MIISOO N95 KN95 Multicolor Korea KF94 Masker Kesehatan masker evo 4ply - Putih 1 Box",
     harga: 100000,
     qty: 1,
-    diskon: 80,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2021/7/5/912088ba-7524-454d-8ef0-bce5c72aca1b.jpg",
   },
@@ -218,7 +218,7 @@ const produk = [
     nama: "MIISOO Disposable Daily Fit mask Per BOX Masker Kesehatan 4ply - Fitmask Putih",
     harga: 80000,
     qty: 1,
-    diskon: 63,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/1/14/fa115a2e-403c-4f20-86bd-14d26a96f8d2.jpg",
   },
@@ -226,7 +226,7 @@ const produk = [
     nama: "SKINTIFIC-5X 2PCS Ceramide Low PH Oil Control Cleanser-80ml【BPOM】",
     harga: 238000,
     qty: 1,
-    diskon: 25,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/12/3/b11cce6e-baea-41f1-9900-6b38a0d7ddab.jpg",
   },
@@ -234,7 +234,7 @@ const produk = [
     nama: "SKINTIFIC Salicylic Acid Acne Powerful Set 3PCS",
     harga: 407000,
     qty: 1,
-    diskon: 27,
+    diskon: 0,
     gambar:
       "https://images.tokopedia.net/img/cache/900/VqbcmM/2022/12/4/8a444d93-754d-43dd-a918-b886310fb9e3.jpg",
   },

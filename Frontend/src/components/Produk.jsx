@@ -22,6 +22,7 @@ export const Produk = (props) => {
     const newQty = qty + count;
     setQty(newQty);
     updateQtyHandler(newQty, count);
+    console.log(newQty);
     // updateRingkasanBelanja();
   };
 
@@ -42,7 +43,8 @@ export const Produk = (props) => {
     })
       .then((res) => res.json())
       .then((update) => {
-        // console.log(isChecked);
+        const id = "produk-" + produk._id;
+        const isChecked = document.getElementById(id).children[0].checked;
         if (isChecked === true) {
           updateRingkasanBelanja(
             update.harga * increment,
@@ -109,7 +111,10 @@ export const Produk = (props) => {
 
   return (
     <>
-      <div className="d-flex flex-row card rounded-3 mb-2 p-3">
+      <div
+        className="d-flex flex-row card rounded-3 mb-2 p-3"
+        id={"produk-" + produk._id}
+      >
         <input
           type="checkbox"
           className="checkbox"
@@ -147,7 +152,7 @@ export const Produk = (props) => {
             </div>
           </div>
 
-          <div className="d-flex align-items-center">
+          <div className="d-flex flex-column flex-md-row align-items-end">
             <div className="product-note me-auto p-2">
               {isInput ? (
                 <textarea

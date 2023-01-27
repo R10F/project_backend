@@ -19,7 +19,7 @@ export const RingkasanBelanja = (props) => {
   // });
 
   return (
-    <div className="card p-3">
+    <div className="card p-3 ">
       <h3 className="fs-5">Ringkasan Belanja</h3>
 
       <p className="d-flex justify-content-between">

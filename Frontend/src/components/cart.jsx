@@ -62,6 +62,7 @@ export const Cart = () => {
   const checkAllHandler = async (e) => {
     let idsToko = [];
     let idsProduk = [];
+
     Array.from(checkboxList).forEach((element) => {
       if (element.dataset.for === "toko") {
         idsToko.push(element.dataset.id);
@@ -197,7 +198,6 @@ export const Cart = () => {
 
     Array.from(document.getElementsByClassName("checkbox")).forEach(
       (element) => {
-        console.log(element);
         if (element.checked) {
           if (element.dataset.for === "toko") {
             idsToko.push(element.dataset.id);
