@@ -40,7 +40,7 @@ export const Layout = () => {
                   </a>
                 </li>
               </ul>
-              <div className="d-flex">
+              {/* <div className="d-flex">
                 <a href="/" className="btn btn-outline-dark">
                   <i className="bi-cart-fill me-1"></i>
                   Cart
@@ -48,7 +48,7 @@ export const Layout = () => {
                     0
                   </span>
                 </a>
-              </div>
+              </div> */}
             </div>
           </div>
         </nav>

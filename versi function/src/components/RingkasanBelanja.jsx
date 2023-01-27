@@ -41,6 +41,7 @@ export const RingkasanBelanja = (props) => {
         type="button"
         className="btn btn-success"
         disabled={totalQty === 0}
+        onClick={props.shopping}
       >
         Beli ({totalQty})
       </button>

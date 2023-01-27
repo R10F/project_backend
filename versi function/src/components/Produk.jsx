@@ -40,13 +40,17 @@ export const Produk = (props) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ qty: newQty }),
     })
-    .then((res) => res.json())
-    .then((update) => {
-      // console.log(isChecked);
-      if (isChecked === true){
-        updateRingkasanBelanja(update.harga*increment, update.diskon*update.harga*increment/100, increment);
-      }
-    })
+      .then((res) => res.json())
+      .then((update) => {
+        // console.log(isChecked);
+        if (isChecked === true) {
+          updateRingkasanBelanja(
+            update.harga * increment,
+            (update.diskon * update.harga * increment) / 100,
+            increment
+          );
+        }
+      });
   };
 
   const handleButtonClick = () => {
@@ -163,8 +167,8 @@ export const Produk = (props) => {
                       {inputValue === ""
                         ? produk.note
                         : produk.note === ""
-                        ? produk.note
-                        : inputValue}
+                        ? inputValue
+                        : ""}
                     </p>
                   </div>
                   <div className="p-2">
