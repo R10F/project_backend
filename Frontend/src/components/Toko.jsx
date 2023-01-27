@@ -33,7 +33,11 @@ export const Toko = (props) => {
         })
           .then((response) => {
             if (response.ok) {
-              Swal.fire("Deleted!", "Produk Berhasil Dihapus", "success");
+              Swal.fire(
+                "Deleted!",
+                "Toko Dan Produk Berhasil Dihapus",
+                "success"
+              );
               setReRender(reRender + 1);
             } else {
               throw new Error("Failed to delete data");

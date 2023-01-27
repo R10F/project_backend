@@ -39,7 +39,7 @@ export const Produk = (props) => {
     })
       .then((res) => res.json())
       .then((update) => {
-        const id = 'produk-' + produk._id;
+        const id = "produk-" + produk._id;
         const isChecked = document.getElementById(id).children[0].checked;
         if (isChecked === true) {
           updateRingkasanBelanja(
@@ -100,7 +100,10 @@ export const Produk = (props) => {
 
   return (
     <>
-      <div className="d-flex flex-row card rounded-3 mb-2 p-3" id={'produk-' + produk._id}>
+      <div
+        className="d-flex flex-row card rounded-3 mb-2 p-3"
+        id={"produk-" + produk._id}
+      >
         <input
           type="checkbox"
           className="checkbox"

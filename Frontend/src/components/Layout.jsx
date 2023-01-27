@@ -1,4 +1,4 @@
-import { Cart } from "./Cart";
+import { Cart } from "./ShoppingCart";
 
 export const Layout = () => {
   return (
