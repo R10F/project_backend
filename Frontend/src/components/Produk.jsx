@@ -104,16 +104,14 @@ export const Produk = (props) => {
         className="d-flex flex-row card rounded-3 mb-2 p-3"
         id={"produk-" + produk._id}
       >
-        <div>
-          <input
-            type="checkbox"
-            className="checkbox"
-            defaultChecked={produk.check}
-            data-for="produk"
-            data-id={produk._id}
-            onChange={localCheckProdukHandler}
-          />
-        </div>
+        <input
+          type="checkbox"
+          className="checkbox"
+          defaultChecked={produk.check}
+          data-for="produk"
+          data-id={produk._id}
+          onChange={localCheckProdukHandler}
+        />
 
         <div className="d-flex flex-column flex-fill">
           <div className="d-flex flex-row">
@@ -158,8 +156,8 @@ export const Produk = (props) => {
                   {inputValue
                     ? inputValue
                     : produk.note !== ""
-                      ? ""
-                      : inputValue}
+                    ? ""
+                    : inputValue}
                 </textarea>
               ) : (
                 <div className="d-flex flex-row mb-3">
@@ -168,8 +166,8 @@ export const Produk = (props) => {
                       {inputValue
                         ? inputValue
                         : produk.note !== ""
-                          ? ""
-                          : inputValue}
+                        ? ""
+                        : inputValue}
                     </p>
                   </div>
                   <div className="p-2">
@@ -181,8 +179,8 @@ export const Produk = (props) => {
                       {inputValue
                         ? "Ubah"
                         : produk.note !== ""
-                          ? "Tulis Catatan"
-                          : "Tulis Catatan"}
+                        ? "Tulis Catatan"
+                        : "Tulis Catatan"}
                     </button>
                   </div>
                 </div>
